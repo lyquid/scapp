@@ -1,0 +1,30 @@
+{
+  "name": "scapp",
+  "version": "1.0.0",
+  "description": "C++ scaffolding tool",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lyquid/scapp.git"
+  },
+  "keywords": [
+    "c++",
+    "cmake",
+    "vcpkg",
+    "scaffold",
+    "generator",
+    "modern"
+  ],
+  "author": "Alejandro Castillo Blanco",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lyquid/scapp/issues"
+  },
+  "homepage": "https://github.com/lyquid/scapp#readme",
+  "devDependencies": {
+    "typescript": "^4.8.3"
+  }
+}
