@@ -1,3 +1,3 @@
 # scapp
 
-SCAFFOLD a C++ APP
+Scaffold a C++ App
