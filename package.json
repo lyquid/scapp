@@ -38,7 +38,7 @@
     "modern"
   ],
   "author": "Alejandro Castillo Blanco <alexcastilloblanco@gmail.com>",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/lyquid/scapp/issues"
   },
