@@ -1,4 +1,4 @@
-import fs = require('fs');
+import * as fs from 'fs';
 
 export const Scapp = (name: string) => {
   const dir = 'template';
@@ -9,7 +9,9 @@ export const Scapp = (name: string) => {
     console.log('directory exists');
   }
 
-  console.log('fvdgfdgfdgfdgdfgfdgdfgdfgdf');
+  console.log(
+    'fvdgfdgfdgfdgdffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffgfdgdfgdfgdf',
+  );
 
   return `Hello ${name}`;
 };
