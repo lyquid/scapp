@@ -2,9 +2,11 @@
   "name": "scapp",
   "version": "1.0.0",
   "description": "C++ scaffolding app",
-  "main": "lib/scapp.js",
-  "types": "lib/scapp.d.ts",
+  "main": "build/scapp.js",
+  "types": "build/scapp.d.ts",
+  "type": "module",
   "scripts": {
+    "start": "node build/scapp.js",
     "build": "tsc -b -v",
     "watch": "tsc -b -v -watch",
 
@@ -22,7 +24,7 @@
     "postversion": "git push && git push --tags"
   },
   "files": [
-    "lib/**/*"
+    "build/**/*"
   ],
   "repository": {
     "type": "git",
