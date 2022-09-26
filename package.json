@@ -4,7 +4,6 @@
   "description": "C++ scaffolding tool",
   "main": "lib/scapp.js",
   "types": "lib/scapp.d.ts",
-  "type": "module",
   "scripts": {
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\"",
