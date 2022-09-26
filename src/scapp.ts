@@ -9,9 +9,7 @@ export const Scapp = (name: string) => {
     console.log('directory exists');
   }
 
-  console.log(
-    'fvdgfdgfdgfdgdffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffgfdgdfgdfgdf',
-  );
+  console.log('fvdgfdgfdgfdgdfffffffffffffffffffffffffffffffffffffffgfdgdfgdfgdf');
 
   return `Hello ${name}`;
 };

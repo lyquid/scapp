@@ -5,13 +5,18 @@
   "main": "lib/scapp.js",
   "types": "lib/scapp.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -b -v",
+    "watch": "tsc -b -v -watch",
+
     "format": "prettier --write \"src/**/*.ts\"",
+
     "lint": "npx eslint .",
     "lintFix": "npx eslint --fix .",
     "test": "jest --config jestconfig.json",
+
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
+
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags"
