@@ -2,8 +2,8 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "target": "ES6",
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
     "declaration": true,
     "outDir": "build",
     "strict": true
