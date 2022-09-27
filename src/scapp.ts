@@ -19,13 +19,43 @@ const debugMode = program.opts().debug;
 const prompt = Prompt({ sigint: true });
 
 /**
+ * Ask users to input a name for their app.
+ * Must begin with an alphanumeric char
+ * and contain only alphanumeric, underscores and/or dashes.
  * @returns The final app name.
  */
 function AppName(): string {
-  let name: string;
-  do {
+  // only letters, numbers, underscore and dash
+  const regexp = /^[A-Za-z0-9_-]*$/;
+  let name = '';
+  let goodName = false;
+  // do this until we get a good name
+  while (!goodName) {
     name = prompt('Name of your C++ app: ') as string;
-  } while (name === '');
+    // lets asume the name is good, for now...
+    goodName = true;
+    // if empty, ask again (and abort!)
+    if (name === '') {
+      console.log('App name is mandatory. If you don\'t have any name yet, press ctrl+c and come back later :P');
+      goodName = false;
+      continue;
+    }
+    // if doesn't match the regexp, ask again
+    if (!name.match(regexp)) {
+      console.log('App name can only contain alphanumeric characters, underscores and dashes.');
+      goodName = false;
+    }
+    // if shorter than 3 chars, ask again
+    if (name.length < 3) {
+      console.log('App name must be 3 chars or more.');
+      goodName = false;
+    }
+    // first char must be alphanumeric, ask again
+    if (!IsAlphaNumeric(name.charAt(0))) {
+      console.log('First char must be alphanumeric.');
+      goodName = false;
+    }
+  }
   return name;
 }
 
@@ -72,6 +102,25 @@ function CreateAppFolder(fullPath: string): boolean {
 function FolderName(appName: string): string {
   const input = prompt(`Folder name (default '${appName}'): `) as string;
   return input !== '' ? input : appName;
+}
+
+/**
+ * Checks if a string is alphanumerical.
+ * Inspired from https://stackoverflow.com/questions/4434076/best-way-to-alphanumeric-check-in-javascript
+ * @param str The string to check.
+ * @returns True if the string is alphanumerical.
+ */
+function IsAlphaNumeric(str: string): boolean {
+  let code: number;
+  for (let i = 0; i < str.length; i++) {
+    code = str.charCodeAt(i);
+    if (!(code > 47 && code < 58) &&  // numeric (0-9)
+        !(code > 64 && code < 91) &&  // upper alpha (A-Z)
+        !(code > 96 && code < 123)) { // lower alpha (a-z)
+      return false;
+    }
+  }
+  return true;
 }
 
 /**
