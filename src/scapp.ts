@@ -11,10 +11,7 @@ import { Command } from 'commander';
 // CLI questions
 import Prompt from 'prompt-sync';
 
-const program = new Command();
-program.name('scapp').description('C++ scaffolding app').version('1.0.0');
-program.option('--debug');
-program.parse();
+const program = InitCommander();
 const prompt = Prompt({ sigint: true });
 const debugMode = program.opts().debug;
 
@@ -102,6 +99,18 @@ function CreateAppFolder(fullPath: string): boolean {
 function FolderName(appName: string): string {
   const input = prompt(`Folder name (default '${appName}'): `) as string;
   return input !== '' ? input : appName;
+}
+
+/**
+ * Initializes and configures Commander.
+ * @returns A Command object ready to use.
+ */
+function InitCommander(): Command {
+  const command = new Command();
+  command.name('scapp').description('C++ scaffolding app').version('1.0.0');
+  command.option('--debug');
+  command.parse();
+  return command;
 }
 
 /**
