@@ -15,8 +15,8 @@ const program = new Command();
 program.name('scapp').description('C++ scaffolding app').version('1.0.0');
 program.option('--debug');
 program.parse();
-const debugMode = program.opts().debug;
 const prompt = Prompt({ sigint: true });
+const debugMode = program.opts().debug;
 
 /**
  * Ask users to input a name for their app.
@@ -127,19 +127,25 @@ function IsAlphaNumeric(str: string): boolean {
  * Driver code for the app.
  */
 function Scapp(): void {
+  // config object for convenience
+  const config = {
+    'appName':        '',
+    'folderName':     '',
+    'fullPath':       '',
+    'templateFolder': 'template'
+  };
   // template app folder
-  const templateFolder = 'template';
-  if (!CheckTemplateFolder(templateFolder)) {
+  if (!CheckTemplateFolder(config.templateFolder)) {
     process.exitCode = 1;
     return;
   }
   // app name
-  const appName = AppName();
+  config.appName = AppName();
   // app folder name
-  const folderName = FolderName(appName);
+  config.folderName = FolderName(config.appName);
   // try to create the folder
-  const fullPath = path.join(process.cwd(), folderName);
-  if (!CreateAppFolder(fullPath)) {
+  config.fullPath = path.join(process.cwd(), config.folderName);
+  if (!CreateAppFolder(config.fullPath)) {
     process.exitCode = 1;
     return;
   }
