@@ -143,11 +143,11 @@ function Scapp(): void {
     'fullPath':       '',
     'templateFolder': 'template'
   };
-  // template app folder
-  if (!CheckTemplateFolder(config.templateFolder)) {
-    process.exitCode = 1;
-    return;
-  }
+  // template app folder ** NOT CURRENTLY IN USE **
+  // if (!CheckTemplateFolder(config.templateFolder)) {
+  //   process.exitCode = 1;
+  //   return;
+  // }
   // app name
   config.appName = AppName();
   // app folder name

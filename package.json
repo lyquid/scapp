@@ -9,9 +9,11 @@
     "scapp": "./build/scapp.js"
   },
   "scripts": {
+    "build:copy": "npx copyfiles -a \"template/**/*\" build",
+    "build:tsc": "tsc -b -v",
+    "build": "npm run build:tsc && npm run build:copy",
     "start": "node build/scapp.js",
     "debug": "node build/scapp.js --debug",
-    "build": "tsc -b -v",
     "watch": "tsc -b -v -watch",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "npx eslint .",
@@ -51,6 +53,7 @@
     "@types/prompt-sync": "^4.2.0",
     "@typescript-eslint/eslint-plugin": "^5.38.0",
     "@typescript-eslint/parser": "^5.38.0",
+    "copyfiles": "^2.4.1",
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
     "jest": "^29.0.3",
