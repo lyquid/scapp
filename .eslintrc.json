@@ -19,6 +19,7 @@
     "@typescript-eslint"
   ],
   "rules": {
+    "no-control-regex": 0,
     "quotes": ["warn", "single"],
     "semi": ["error", "always"]
   }

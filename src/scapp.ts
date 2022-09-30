@@ -9,10 +9,9 @@ import process from 'process';
 // arguments
 import { Command } from 'commander';
 // CLI questions
-import Prompt from 'prompt-sync';
+import inquirer from 'inquirer';
 
 const program = InitCommander();
-const prompt = Prompt({ sigint: true });
 const debugMode = program.opts().debug;
 
 /**
@@ -21,54 +20,51 @@ const debugMode = program.opts().debug;
  * and contain only alphanumeric, underscores and/or dashes.
  * @returns The final app name.
  */
-function AppName(): string {
+async function AppName(): Promise<string> {
   // only letters, numbers, underscore and dash
   const regexp = /^[A-Za-z0-9_-]*$/;
-  let name = '';
-  let goodName = false;
-  // do this until we get a good name
-  while (!goodName) {
-    name = prompt('Name of your C++ app: ') as string;
-    // lets asume the name is good, for now...
-    goodName = true;
-    // if empty, ask again (and abort!)
-    if (name === '') {
-      console.log('App name is mandatory. If you don\'t have any name yet, press ctrl+c and come back later :P');
-      goodName = false;
-      continue;
+  let appName = '';
+  await inquirer.prompt([{
+    name: 'appName',
+    message: 'Name of your C++ app:',
+    validate: (input: string) => {
+      if (input === '' || input === null) {
+        return 'App name is mandatory. If you don\'t have any name yet, press ctrl+c and come back later :P';
+      }
+      if (!input.match(regexp)) {
+        return 'App name can only contain alphanumeric characters, underscores and dashes.';
+      }
+      if (input.length < 3) {
+        return 'App name must be 3 chars or more.';
+      }
+      if (!IsAlphaNumeric(input.charAt(0))) {
+        return 'First char must be alphanumeric.';
+      }
+      return true;
     }
-    // if doesn't match the regexp, ask again
-    if (!name.match(regexp)) {
-      console.log('App name can only contain alphanumeric characters, underscores and dashes.');
-      goodName = false;
-    }
-    // if shorter than 3 chars, ask again
-    if (name.length < 3) {
-      console.log('App name must be 3 chars or more.');
-      goodName = false;
-    }
-    // first char must be alphanumeric, ask again
-    if (!IsAlphaNumeric(name.charAt(0))) {
-      console.log('First char must be alphanumeric.');
-      goodName = false;
-    }
-  }
-  return name;
+  }])
+  .then((answers) => {
+    appName = answers.appName as string;
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+  return appName;
 }
 
 /**
  * @param templateFolder The name of the template folder.
  * @returns True if the folder exists. False otherwise.
  */
-function CheckTemplateFolder(templateFolder: string): boolean {
-  if (!fs.existsSync(templateFolder)) {
-    console.error('Template folder is missing! Aborting.');
-    return false;
-  } else {
-    if (debugMode) console.debug('Template folder exists.');
-    return true;
-  }
-}
+// function CheckTemplateFolder(templateFolder: string): boolean {
+//   if (!fs.existsSync(templateFolder)) {
+//     console.error('Template folder is missing! Aborting.');
+//     return false;
+//   } else {
+//     if (debugMode) console.debug('Template folder exists.');
+//     return true;
+//   }
+// }
 
 /**
  * @param fullPath The full path to the desired folder.
@@ -96,9 +92,27 @@ function CreateAppFolder(fullPath: string): boolean {
  * @param appName The name of the app.
  * @returns The final folder name.
  */
-function FolderName(appName: string): string {
-  const input = prompt(`Folder name (default '${appName}'): `) as string;
-  return input !== '' ? input : appName;
+async function FolderName(appName: string): Promise<string> {
+  let folderName = '';
+  const regexp = /^[^\s^\x00-\x1f\\?*:"";<>|/.][^\x00-\x1f\\?*:"";<>|/]*[^\s^\x00-\x1f\\?*:"";<>|/.]+$/g;
+  await inquirer.prompt([{
+    name: 'folderName',
+    message: 'Folder name for your C++ app: ',
+    default: appName,
+    validate: (input: string) => {
+      if (input !== '' && input !== null && !input.match(regexp)) {
+        return 'Invalid folder name.';
+      }
+      return true;
+    }
+  }])
+  .then((answers) => {
+    folderName = answers.folderName as string;
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+  return folderName !== '' ? folderName : appName;
 }
 
 /**
@@ -135,7 +149,7 @@ function IsAlphaNumeric(str: string): boolean {
 /**
  * Driver code for the app.
  */
-function Scapp(): void {
+async function Scapp() {
   // config object for convenience
   const config = {
     'appName':        '',
@@ -149,9 +163,9 @@ function Scapp(): void {
   //   return;
   // }
   // app name
-  config.appName = AppName();
+  config.appName = await AppName();
   // app folder name
-  config.folderName = FolderName(config.appName);
+  config.folderName = await FolderName(config.appName);
   // try to create the folder
   config.fullPath = path.join(process.cwd(), config.folderName);
   if (!CreateAppFolder(config.fullPath)) {
