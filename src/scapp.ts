@@ -78,9 +78,15 @@ function CreateAppFolder(fullPath: string): boolean {
       if (debugMode) console.debug(`Full path to app directory: ${fullPath}`);
       return true;
     } else {
-      // folder exists
-      console.error('Folder already exists! Aborting.');
-      return false;
+      // folder exists, check if it's empty
+      if (fs.readdirSync(fullPath).length) {
+        // folder's not empty
+        console.error('Folder already exists and isn\'t emtpy! Aborting.');
+        return false;
+      }
+      // folder is emtpy
+      console.warn('Folder already exists, but it seems to be empty. Proceeding...');
+      return true;
     }
   } catch (err) {
     console.error(err);
