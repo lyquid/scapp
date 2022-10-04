@@ -82,6 +82,7 @@ async function Scapp() {
   // config object for convenience
   const config = {
     'appName':        '',
+    'cmake':          true,
     'editorConfig':   true,
     'folderName':     '',
     'fullPath':       '',
@@ -94,6 +95,8 @@ async function Scapp() {
   config.folderName = await Ask.FolderName(config.appName);
   // git
   config.git = await Ask.Git();
+  // cmake
+  config.cmake = await Ask.Cmake();
   // editorconfig
   config.editorConfig = await Ask.EditorConfig();
   // try to create the folder app folder

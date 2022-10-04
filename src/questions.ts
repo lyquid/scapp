@@ -44,6 +44,27 @@ export default class Ask {
   }
 
   /**
+   * Asks if the new app should use CMake.
+   * @returns True if the app will use CMake. False otherwise.
+   */
+   static async Cmake(): Promise<boolean> {
+    let useCmake = true;
+    await inquirer.prompt([{
+      type:    'confirm',
+      name:    'cmake',
+      message: 'Use CMake:',
+      default: true
+    }])
+    .then((answers) => {
+      useCmake = answers.cmake as boolean;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+    return useCmake;
+  }
+
+  /**
    * Asks if the new app should use editorconfig.
    * @returns True if the app will use editorconfig. False otherwise.
    */
@@ -91,6 +112,10 @@ export default class Ask {
     return folderName !== '' ? folderName : appName;
   }
 
+  /**
+   * Asks if the new app should use Git.
+   * @returns True if the app will use Git. False otherwise.
+   */
   static async Git(): Promise<boolean> {
     let useGit = true;
     await inquirer.prompt([{
