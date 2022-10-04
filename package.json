@@ -9,9 +9,7 @@
     "scapp": "./build/scapp.js"
   },
   "scripts": {
-    "build:copy": "npx copyfiles -a -V \"template/**/*\" build",
-    "build:tsc": "tsc -b -v",
-    "build": "npm run build:tsc",
+    "build": "tsc -b -v",
     "start": "node build/scapp.js",
     "debug": "node build/scapp.js --debug",
     "watch": "tsc -b -v -watch",
