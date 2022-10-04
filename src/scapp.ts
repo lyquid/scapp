@@ -22,7 +22,7 @@ const debugMode = program.opts().debug;
  * and contain only alphanumeric, underscores and/or dashes.
  * @returns The final app name.
  */
-async function AppName(): Promise<string> {
+async function AskAppName(): Promise<string> {
   // only letters, numbers, underscore and dash
   const regexp = /^[A-Za-z0-9_-]*$/;
   let appName = '';
@@ -52,6 +52,33 @@ async function AppName(): Promise<string> {
     console.error(error);
   });
   return appName;
+}
+
+/**
+ * @param appName The previously asked app's name.
+ * @returns The final folder name.
+ */
+ async function AskFolderName(appName: string): Promise<string> {
+  let folderName = '';
+  const regexp = /^[^\s^\x00-\x1f\\?*:"";<>|/.][^\x00-\x1f\\?*:"";<>|/]*[^\s^\x00-\x1f\\?*:"";<>|/.]+$/g;
+  await inquirer.prompt([{
+    name: 'folderName',
+    message: 'Folder name for your C++ app: ',
+    default: appName,
+    validate: (input: string) => {
+      if (input !== '' && input !== null && !input.match(regexp)) {
+        return 'Invalid folder name.';
+      }
+      return true;
+    }
+  }])
+  .then((answers) => {
+    folderName = answers.folderName as string;
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+  return folderName !== '' ? folderName : appName;
 }
 
 /**
@@ -102,33 +129,6 @@ function CreateAppFolder(fullPath: string): boolean {
 }
 
 /**
- * @param appName The name of the app.
- * @returns The final folder name.
- */
-async function FolderName(appName: string): Promise<string> {
-  let folderName = '';
-  const regexp = /^[^\s^\x00-\x1f\\?*:"";<>|/.][^\x00-\x1f\\?*:"";<>|/]*[^\s^\x00-\x1f\\?*:"";<>|/.]+$/g;
-  await inquirer.prompt([{
-    name: 'folderName',
-    message: 'Folder name for your C++ app: ',
-    default: appName,
-    validate: (input: string) => {
-      if (input !== '' && input !== null && !input.match(regexp)) {
-        return 'Invalid folder name.';
-      }
-      return true;
-    }
-  }])
-  .then((answers) => {
-    folderName = answers.folderName as string;
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-  return folderName !== '' ? folderName : appName;
-}
-
-/**
  * Initializes and configures Commander.
  * @returns A Command object ready to use.
  */
@@ -171,9 +171,9 @@ async function Scapp() {
     'templateFolder': '../template'
   };
   // app name
-  config.appName = await AppName();
+  config.appName = await AskAppName();
   // app folder name
-  config.folderName = await FolderName(config.appName);
+  config.folderName = await AskFolderName(config.appName);
   // try to create the folder app folder
   config.fullPath = path.join(process.cwd(), config.folderName);
   if (!CreateAppFolder(config.fullPath)) {
