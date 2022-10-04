@@ -4,6 +4,8 @@
 import * as fs from 'fs';
 // path utils
 import path from 'path';
+// to know where this file is
+import { fileURLToPath } from 'url';
 // for the exitCode
 import process from 'process';
 // arguments
@@ -53,18 +55,23 @@ async function AppName(): Promise<string> {
 }
 
 /**
- * @param templateFolder The name of the template folder.
- * @returns True if the folder exists. False otherwise.
+ * Copies the template folder to the user's desired directory.
+ * @param templateFolderName The name of the template folder.
+ * @param destination The destination folder. The one desired by the user.
+ * @returns True if all went OK. False otherwise.
  */
-// function CheckTemplateFolder(templateFolder: string): boolean {
-//   if (!fs.existsSync(templateFolder)) {
-//     console.error('Template folder is missing! Aborting.');
-//     return false;
-//   } else {
-//     if (debugMode) console.debug('Template folder exists.');
-//     return true;
-//   }
-// }
+function CopyTemplateFolder(templateFolderName: string, destination: string): boolean {
+  // get the full path to the template folder
+  const templateFolder = path.join(path.dirname(fileURLToPath(import.meta.url)), templateFolderName);
+  // copy it to the user's desired directory
+  try {
+    fs.cpSync(templateFolder, destination, { recursive: true });
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+  return true;
+}
 
 /**
  * @param fullPath The full path to the desired folder.
@@ -161,23 +168,24 @@ async function Scapp() {
     'appName':        '',
     'folderName':     '',
     'fullPath':       '',
-    'templateFolder': 'template'
+    'templateFolder': '../template'
   };
-  // template app folder ** NOT CURRENTLY IN USE **
-  // if (!CheckTemplateFolder(config.templateFolder)) {
-  //   process.exitCode = 1;
-  //   return;
-  // }
   // app name
   config.appName = await AppName();
   // app folder name
   config.folderName = await FolderName(config.appName);
-  // try to create the folder
+  // try to create the folder app folder
   config.fullPath = path.join(process.cwd(), config.folderName);
   if (!CreateAppFolder(config.fullPath)) {
     process.exitCode = 1;
     return;
   }
+  // copy the contents of template folder to the app folder
+  if (!CopyTemplateFolder(config.templateFolder, config.fullPath)) {
+    process.exitCode = 1;
+    return;
+  }
+  // transform template to user input
 }
 
 Scapp();

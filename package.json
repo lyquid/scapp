@@ -9,9 +9,9 @@
     "scapp": "./build/scapp.js"
   },
   "scripts": {
-    "build:copy": "npx copyfiles -a \"template/**/*\" build",
+    "build:copy": "npx copyfiles -a -V \"template/**/*\" build",
     "build:tsc": "tsc -b -v",
-    "build": "npm run build:tsc && npm run build:copy",
+    "build": "npm run build:tsc",
     "start": "node build/scapp.js",
     "debug": "node build/scapp.js --debug",
     "watch": "tsc -b -v -watch",
@@ -48,6 +48,7 @@
   },
   "homepage": "https://github.com/lyquid/scapp#readme",
   "devDependencies": {
+    "@types/copyfiles": "^2.4.1",
     "@types/inquirer": "^9.0.2",
     "@types/jest": "^29.1.0",
     "@types/node": "^18.7.23",
