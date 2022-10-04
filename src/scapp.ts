@@ -85,12 +85,15 @@ async function Scapp() {
     'editorConfig':   true,
     'folderName':     '',
     'fullPath':       '',
+    'git':            true,
     'templateFolder': '../template'
   };
   // app name
   config.appName = await Ask.AppName();
   // app folder name
   config.folderName = await Ask.FolderName(config.appName);
+  // git
+  config.git = await Ask.Git();
   // editorconfig
   config.editorConfig = await Ask.EditorConfig();
   // try to create the folder app folder

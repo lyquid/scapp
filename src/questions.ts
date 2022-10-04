@@ -50,9 +50,9 @@ export default class Ask {
   static async EditorConfig(): Promise<boolean> {
     let useEditorConfig = true;
     await inquirer.prompt([{
-      type: 'confirm',
-      name: 'editorConfig',
-      message: 'Use editorconfig',
+      type:    'confirm',
+      name:    'editorConfig',
+      message: 'Use editorconfig:',
       default: true
     }])
     .then((answers) => {
@@ -89,6 +89,23 @@ export default class Ask {
       console.error(error);
     });
     return folderName !== '' ? folderName : appName;
+  }
+
+  static async Git(): Promise<boolean> {
+    let useGit = true;
+    await inquirer.prompt([{
+      type:    'confirm',
+      name:    'git',
+      message: 'Use Git:',
+      default: true
+    }])
+    .then((answers) => {
+      useGit = answers.git as boolean;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+    return useGit;
   }
 
   /**
