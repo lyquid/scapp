@@ -87,7 +87,8 @@ async function Scapp() {
     'folderName':     '',
     'fullPath':       '',
     'git':            true,
-    'templateFolder': '../template'
+    'templateFolder': '../template',
+    'vcpkg':          true
   };
   // app name
   config.appName = await Ask.AppName();
@@ -97,6 +98,8 @@ async function Scapp() {
   config.git = await Ask.Git();
   // cmake
   config.cmake = await Ask.Cmake();
+  // vcpkg
+  config.vcpkg = await Ask.Vcpkg();
   // editorconfig
   config.editorConfig = await Ask.EditorConfig();
   // try to create the folder app folder

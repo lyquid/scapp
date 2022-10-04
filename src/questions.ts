@@ -134,6 +134,27 @@ export default class Ask {
   }
 
   /**
+   * Asks if the new app should use vcpkg.
+   * @returns True if the app will use vcpkg. False otherwise.
+   */
+   static async Vcpkg(): Promise<boolean> {
+    let useVcpkg = true;
+    await inquirer.prompt([{
+      type:    'confirm',
+      name:    'vcpkg',
+      message: 'Use vcpkg:',
+      default: true
+    }])
+    .then((answers) => {
+      useVcpkg = answers.vcpkg as boolean;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+    return useVcpkg;
+  }
+
+  /**
    * Checks if a string is alphanumerical.
    * Inspired from https://stackoverflow.com/questions/4434076/best-way-to-alphanumeric-check-in-javascript
    * @param str The string to check.
