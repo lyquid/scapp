@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "target": "ES6",
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "target": "ES2017",
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
     "declaration": true,
-    "outDir": "lib",
-    "strict": true
+    "outDir": "build",
+    "strict": true,
+    "sourceMap": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "**/__tests__/*"]
