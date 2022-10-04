@@ -10,76 +10,11 @@ import { fileURLToPath } from 'url';
 import process from 'process';
 // arguments
 import { Command } from 'commander';
-// CLI questions
-import inquirer from 'inquirer';
+// questions
+import Ask from './questions.js';
 
 const program = InitCommander();
 const debugMode = program.opts().debug;
-
-/**
- * Ask users to input a name for their app.
- * Must begin with an alphanumeric char
- * and contain only alphanumeric, underscores and/or dashes.
- * @returns The final app name.
- */
-async function AskAppName(): Promise<string> {
-  // only letters, numbers, underscore and dash
-  const regexp = /^[A-Za-z0-9_-]*$/;
-  let appName = '';
-  await inquirer.prompt([{
-    name: 'appName',
-    message: 'Name of your C++ app:',
-    validate: (input: string) => {
-      if (input === '' || input === null) {
-        return 'App name is mandatory. If you don\'t have any name yet, press ctrl+c and come back later :P';
-      }
-      if (!input.match(regexp)) {
-        return 'App name can only contain alphanumeric characters, underscores and dashes.';
-      }
-      if (input.length < 3) {
-        return 'App name must be 3 chars or more.';
-      }
-      if (!IsAlphaNumeric(input.charAt(0))) {
-        return 'First char must be alphanumeric.';
-      }
-      return true;
-    }
-  }])
-  .then((answers) => {
-    appName = answers.appName as string;
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-  return appName;
-}
-
-/**
- * @param appName The previously asked app's name.
- * @returns The final folder name.
- */
- async function AskFolderName(appName: string): Promise<string> {
-  let folderName = '';
-  const regexp = /^[^\s^\x00-\x1f\\?*:"";<>|/.][^\x00-\x1f\\?*:"";<>|/]*[^\s^\x00-\x1f\\?*:"";<>|/.]+$/g;
-  await inquirer.prompt([{
-    name: 'folderName',
-    message: 'Folder name for your C++ app: ',
-    default: appName,
-    validate: (input: string) => {
-      if (input !== '' && input !== null && !input.match(regexp)) {
-        return 'Invalid folder name.';
-      }
-      return true;
-    }
-  }])
-  .then((answers) => {
-    folderName = answers.folderName as string;
-  })
-  .catch((error) => {
-    console.error(error);
-  });
-  return folderName !== '' ? folderName : appName;
-}
 
 /**
  * Copies the template folder to the user's desired directory.
@@ -141,39 +76,23 @@ function InitCommander(): Command {
 }
 
 /**
- * Checks if a string is alphanumerical.
- * Inspired from https://stackoverflow.com/questions/4434076/best-way-to-alphanumeric-check-in-javascript
- * @param str The string to check.
- * @returns True if the string is alphanumerical.
- */
-function IsAlphaNumeric(str: string): boolean {
-  let code: number;
-  for (let i = 0; i < str.length; i++) {
-    code = str.charCodeAt(i);
-    if (!(code > 47 && code < 58) &&  // numeric (0-9)
-        !(code > 64 && code < 91) &&  // upper alpha (A-Z)
-        !(code > 96 && code < 123)) { // lower alpha (a-z)
-      return false;
-    }
-  }
-  return true;
-}
-
-/**
  * Driver code for the app.
  */
 async function Scapp() {
   // config object for convenience
   const config = {
     'appName':        '',
+    'editorConfig':   true,
     'folderName':     '',
     'fullPath':       '',
     'templateFolder': '../template'
   };
   // app name
-  config.appName = await AskAppName();
+  config.appName = await Ask.AppName();
   // app folder name
-  config.folderName = await AskFolderName(config.appName);
+  config.folderName = await Ask.FolderName(config.appName);
+  // editorconfig
+  config.editorConfig = await Ask.EditorConfig();
   // try to create the folder app folder
   config.fullPath = path.join(process.cwd(), config.folderName);
   if (!CreateAppFolder(config.fullPath)) {
