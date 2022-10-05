@@ -13,7 +13,7 @@ My plan is, for the moment, to make the app use the tools I use, which are: **CM
 
 I usually code with [VSCode](https://code.visualstudio.com/) editor with a bunch of C++ [extensions](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack) that allow me to compile and run the app from the editor, so no support for MSVC or make, *yet*.
 
- - [x] Adds an pretty complete `.gitignore` generated from [here](https://www.toptal.com/developers/gitignore?templates=windows,macos,linux,node,c++,visualstudiocode,emacs,vim,visualstudio,cmake,vcpkg,intellij+all).
+ - [x] Adds a pretty complete `.gitignore` generated from [here](https://www.toptal.com/developers/gitignore?templates=windows,macos,linux,node,c++,visualstudiocode,emacs,vim,visualstudio,cmake,vcpkg,intellij+all).
  - [x] `.editorconfig`.
  - [ ] Various `CMakeLists.txt` already configured.
  - [ ] A `vcpkg.json` also minimally configured.
