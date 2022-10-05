@@ -52,7 +52,7 @@ export default class Ask {
     await inquirer.prompt([{
       type:    'confirm',
       name:    'cmake',
-      message: 'Use CMake:',
+      message: 'Use CMake?',
       default: true
     }])
     .then((answers) => {
@@ -73,7 +73,7 @@ export default class Ask {
     await inquirer.prompt([{
       type:    'confirm',
       name:    'editorConfig',
-      message: 'Use editorconfig:',
+      message: 'Use editorconfig?',
       default: true
     }])
     .then((answers) => {
@@ -121,7 +121,7 @@ export default class Ask {
     await inquirer.prompt([{
       type:    'confirm',
       name:    'git',
-      message: 'Use Git:',
+      message: 'Use Git?',
       default: true
     }])
     .then((answers) => {
@@ -134,6 +134,47 @@ export default class Ask {
   }
 
   /**
+   * Asks if the new app should have a source folder.
+   * @returns True if the app will have a source folder. False otherwise.
+   */
+   static async SourceFolder() {
+    let useSrcFolder = true;
+    await inquirer.prompt([{
+      type:    'confirm',
+      name:    'srcFolder',
+      message: 'Create a source folder?',
+      default: true
+    }])
+    .then((answers) => {
+      useSrcFolder = answers.srcFolder as boolean;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+    return useSrcFolder;
+  }
+
+  /**
+   * Asks for a name for the source folder.
+   * @returns The desired name for the source folder.
+   */
+   static async SourceFolderName() {
+    let srcFolderName = '';
+    await inquirer.prompt([{
+      name:    'srcFolderName',
+      message: 'Which name do you prefer for the source folder?',
+      default: 'src'
+    }])
+    .then((answers) => {
+      srcFolderName = answers.srcFolderName as string;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+    return srcFolderName;
+  }
+
+  /**
    * Asks if the new app should use vcpkg.
    * @returns True if the app will use vcpkg. False otherwise.
    */
@@ -142,7 +183,7 @@ export default class Ask {
     await inquirer.prompt([{
       type:    'confirm',
       name:    'vcpkg',
-      message: 'Use vcpkg:',
+      message: 'Use vcpkg?',
       default: true
     }])
     .then((answers) => {

@@ -87,6 +87,8 @@ async function Scapp() {
     'folderName':     '',
     'fullPath':       '',
     'git':            true,
+    'srcFolder':      true,
+    'srcFolderName':  '',
     'templateFolder': '../template',
     'vcpkg':          true
   };
@@ -94,6 +96,9 @@ async function Scapp() {
   config.appName = await Ask.AppName();
   // app folder name
   config.folderName = await Ask.FolderName(config.appName);
+  // src folder & it's name
+  config.srcFolder = await Ask.SourceFolder();
+  if ((config.srcFolder)) config.srcFolderName = await Ask.SourceFolderName();
   // git
   config.git = await Ask.Git();
   // cmake
