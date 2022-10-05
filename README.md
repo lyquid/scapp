@@ -3,7 +3,7 @@ Scaffold a C++ App
 ## What?
 Create an scaffold for your C++ app in seconds, supporting [Git](https://git-scm.com/), [CMake](https://cmake.org/), [editorconfig](https://editorconfig.org/) and [vcpkg](https://vcpkg.io/en/index.html) and also different C++ standards.
 ## How?
-This is an CLI app that asks the user for information like app name, version, use editorconfig or not, etc. Then scaffolds a folder with all that input.
+This is a CLI app that asks the user for information like app name, version, use editorconfig or not, etc. Then scaffolds a folder with all that input.
 ## Why?
 If your are like me and likes to start new C++ projects so often to try new things, maybe you are tired of always setup the app before you can even code something. 
 
