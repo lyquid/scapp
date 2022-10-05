@@ -137,7 +137,7 @@ export default class Ask {
    * Asks if the new app should have a source folder.
    * @returns True if the app will have a source folder. False otherwise.
    */
-   static async SourceFolder() {
+   static async SourceFolder(): Promise<boolean> {
     let useSrcFolder = true;
     await inquirer.prompt([{
       type:    'confirm',
