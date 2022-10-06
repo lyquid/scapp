@@ -155,6 +155,7 @@ export default class Ask {
 
   /**
    * Asks for a name for the source folder.
+   * @param defaultName The default name for the source folder.
    * @returns The desired name for the source folder.
    */
   static async sourceFolderName(defaultName: string) {

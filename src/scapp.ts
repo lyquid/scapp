@@ -87,10 +87,19 @@ function removeFolder(path: string) {
   }
 }
 
+function renameFolder(folder: string, newFolder: string) {
+  try {
+    fs.renameSync(folder, newFolder);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 /**
  * Driver code for the app.
  */
 async function scapp() {
+  const SRC_FOLDER = 'src';
   // config object for convenience
   const config = {
     'appName':        '',
@@ -100,7 +109,7 @@ async function scapp() {
     'fullPath':       '',
     'git':            true,
     'srcFolder':      true,
-    'srcFolderName':  'src',
+    'srcFolderName':  SRC_FOLDER,
     'templateFolder': '../template',
     'vcpkg':          true
   };
@@ -110,7 +119,7 @@ async function scapp() {
   config.folderName = await Ask.folderName(config.appName);
   // src folder & it's name
   config.srcFolder = await Ask.sourceFolder();
-  if ((config.srcFolder)) config.srcFolderName = await Ask.sourceFolderName(config.srcFolderName);
+  if ((config.srcFolder)) config.srcFolderName = await Ask.sourceFolderName(SRC_FOLDER);
   // git
   config.git = await Ask.git();
   // cmake
@@ -132,7 +141,10 @@ async function scapp() {
   }
   // remove the source folder if needed
   if (!config.srcFolder) {
-    removeFolder(path.join(config.fullPath, config.srcFolderName));
+    removeFolder(path.join(config.fullPath, SRC_FOLDER));
+  } else if (config.srcFolderName !== SRC_FOLDER) {
+    // rename source folder if needed
+    renameFolder(path.join(config.fullPath, SRC_FOLDER), path.join(config.fullPath, config.srcFolderName));
   }
 }
 
