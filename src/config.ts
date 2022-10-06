@@ -5,35 +5,35 @@ export interface ScappConfig {
   /**
    * The name of the app to scaffold.
    */
-  appName:        string,
+  appName: string,
   /**
    * Use CMake?
    */
-  cmake:          boolean,
+  cmake: boolean,
   /**
    * Use editorconfig?
    */
-  editorConfig:   boolean,
+  editorConfig: boolean,
   /**
    * Folder name for the app to scaffold.
    */
-  folderName:     string,
+  folderName: string,
   /**
    * Absolute path to the app. Includes the app's folder.
    */
-  fullPath:       string,
+  fullPath: string,
   /**
    * Use Git?
    */
-  git:            boolean,
+  git: boolean,
   /**
    * Make a source folder?
    */
-  srcFolder:      boolean,
+  srcFolder: boolean,
   /**
    * Source folder name. Where the code should live.
    */
-  srcFolderName:  string,
+  srcFolderName: string,
   /**
    * Template folder name.
    */
@@ -41,5 +41,5 @@ export interface ScappConfig {
   /**
    * Use vcpkg?
    */
-  vcpkg:          boolean
+  vcpkg: boolean
 }
