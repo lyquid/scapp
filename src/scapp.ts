@@ -13,7 +13,7 @@ import { Command } from 'commander';
 // questions
 import Ask from './questions.js';
 
-const program = InitCommander();
+const program = initCommander();
 const debugMode = program.opts().debug;
 
 /**
@@ -22,7 +22,7 @@ const debugMode = program.opts().debug;
  * @param destination The destination folder. The one desired by the user.
  * @returns True if all went OK. False otherwise.
  */
-function CopyTemplateFolder(templateFolderName: string, destination: string): boolean {
+function copyTemplateFolder(templateFolderName: string, destination: string): boolean {
   // get the full path to the template folder
   const templateFolder = path.join(path.dirname(fileURLToPath(import.meta.url)), templateFolderName);
   // copy it to the user's desired directory
@@ -39,7 +39,7 @@ function CopyTemplateFolder(templateFolderName: string, destination: string): bo
  * @param fullPath The full path to the desired folder.
  * @returns True if the folder was created successfully. False otherwise.
  */
-function CreateAppFolder(fullPath: string): boolean {
+function createAppFolder(fullPath: string): boolean {
   try {
     if (!fs.existsSync(fullPath)) {
       // folder doesn't even exists, good!
@@ -67,7 +67,7 @@ function CreateAppFolder(fullPath: string): boolean {
  * Initializes and configures Commander.
  * @returns A Command object ready to use.
  */
-function InitCommander(): Command {
+function initCommander(): Command {
   const command = new Command();
   command.name('scapp').description('C++ scaffolding app').version('1.0.0');
   command.option('--debug');
@@ -78,7 +78,7 @@ function InitCommander(): Command {
 /**
  * Driver code for the app.
  */
-async function Scapp() {
+async function scapp() {
   // config object for convenience
   const config = {
     'appName':        '',
@@ -93,32 +93,32 @@ async function Scapp() {
     'vcpkg':          true
   };
   // app name
-  config.appName = await Ask.AppName();
+  config.appName = await Ask.appName();
   // app folder name
-  config.folderName = await Ask.FolderName(config.appName);
+  config.folderName = await Ask.folderName(config.appName);
   // src folder & it's name
-  config.srcFolder = await Ask.SourceFolder();
-  if ((config.srcFolder)) config.srcFolderName = await Ask.SourceFolderName();
+  config.srcFolder = await Ask.sourceFolder();
+  if ((config.srcFolder)) config.srcFolderName = await Ask.sourceFolderName();
   // git
-  config.git = await Ask.Git();
+  config.git = await Ask.git();
   // cmake
-  config.cmake = await Ask.Cmake();
+  config.cmake = await Ask.cmake();
   // vcpkg
-  config.vcpkg = await Ask.Vcpkg();
+  config.vcpkg = await Ask.vcpkg();
   // editorconfig
-  config.editorConfig = await Ask.EditorConfig();
+  config.editorConfig = await Ask.editorConfig();
   // try to create the folder app folder
   config.fullPath = path.join(process.cwd(), config.folderName);
-  if (!CreateAppFolder(config.fullPath)) {
+  if (!createAppFolder(config.fullPath)) {
     process.exitCode = 1;
     return;
   }
   // copy the contents of template folder to the app folder
-  if (!CopyTemplateFolder(config.templateFolder, config.fullPath)) {
+  if (!copyTemplateFolder(config.templateFolder, config.fullPath)) {
     process.exitCode = 1;
     return;
   }
   // transform template to user input
 }
 
-Scapp();
+scapp();

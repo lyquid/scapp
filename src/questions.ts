@@ -11,7 +11,7 @@ export default class Ask {
    * and contain only alphanumeric, underscores and/or dashes.
    * @returns The final app name.
    */
-  static async AppName(): Promise<string> {
+  static async appName(): Promise<string> {
     // only letters, numbers, underscore and dash
     const regexp = /^[A-Za-z0-9_-]*$/;
     let appName = '';
@@ -28,7 +28,7 @@ export default class Ask {
         if (input.length < 3) {
           return 'App name must be 3 chars or more.';
         }
-        if (!Ask.#IsAlphaNumeric(input.charAt(0))) {
+        if (!Ask.#isAlphaNumeric(input.charAt(0))) {
           return 'First char must be alphanumeric.';
         }
         return true;
@@ -47,7 +47,7 @@ export default class Ask {
    * Asks if the new app should use CMake.
    * @returns True if the app will use CMake. False otherwise.
    */
-   static async Cmake(): Promise<boolean> {
+   static async cmake(): Promise<boolean> {
     let useCmake = true;
     await inquirer.prompt([{
       type:    'confirm',
@@ -68,7 +68,7 @@ export default class Ask {
    * Asks if the new app should use editorconfig.
    * @returns True if the app will use editorconfig. False otherwise.
    */
-  static async EditorConfig(): Promise<boolean> {
+  static async editorConfig(): Promise<boolean> {
     let useEditorConfig = true;
     await inquirer.prompt([{
       type:    'confirm',
@@ -89,14 +89,14 @@ export default class Ask {
    * @param appName The previously asked app's name.
    * @returns The final folder name.
    */
-  static async FolderName(appName: string): Promise<string> {
+  static async folderName(appName: string): Promise<string> {
     let folderName = '';
     await inquirer.prompt([{
       name: 'folderName',
       message: 'Folder name for your C++ app: ',
       default: appName,
       validate: (input: string) => {
-        if (input !== '' && input !== null && this.#ValidFolderName(input)) {
+        if (input !== '' && input !== null && this.#validFolderName(input)) {
           return 'Invalid folder name.';
         }
         return true;
@@ -115,7 +115,7 @@ export default class Ask {
    * Asks if the new app should use Git.
    * @returns True if the app will use Git. False otherwise.
    */
-  static async Git(): Promise<boolean> {
+  static async git(): Promise<boolean> {
     let useGit = true;
     await inquirer.prompt([{
       type:    'confirm',
@@ -136,7 +136,7 @@ export default class Ask {
    * Asks if the new app should have a source folder.
    * @returns True if the app will have a source folder. False otherwise.
    */
-   static async SourceFolder(): Promise<boolean> {
+   static async sourceFolder(): Promise<boolean> {
     let useSrcFolder = true;
     await inquirer.prompt([{
       type:    'confirm',
@@ -157,14 +157,14 @@ export default class Ask {
    * Asks for a name for the source folder.
    * @returns The desired name for the source folder.
    */
-   static async SourceFolderName() {
+   static async sourceFolderName() {
     let srcFolderName = '';
     await inquirer.prompt([{
       name:    'srcFolderName',
       message: 'Name for the source folder:',
       default: 'src',
       validate: (input: string) => {
-        if (input !== '' && input !== null && this.#ValidFolderName(input)) {
+        if (input !== '' && input !== null && this.#validFolderName(input)) {
           return 'Invalid folder name.';
         }
         return true;
@@ -183,7 +183,7 @@ export default class Ask {
    * Asks if the new app should use vcpkg.
    * @returns True if the app will use vcpkg. False otherwise.
    */
-   static async Vcpkg(): Promise<boolean> {
+   static async vcpkg(): Promise<boolean> {
     let useVcpkg = true;
     await inquirer.prompt([{
       type:    'confirm',
@@ -206,7 +206,7 @@ export default class Ask {
    * @param str The string to check.
    * @returns True if the string is alphanumerical.
    */
-  static #IsAlphaNumeric(str: string): boolean {
+  static #isAlphaNumeric(str: string): boolean {
     let code: number;
     for (let i = 0; i < str.length; i++) {
       code = str.charCodeAt(i);
@@ -224,7 +224,7 @@ export default class Ask {
    * @param str The string to check.
    * @returns True if it's a **GOOD** folder name. False if it's **NOT** a valid folder name.
    */
-   static #ValidFolderName(str: string): boolean {
+   static #validFolderName(str: string): boolean {
     const regexp = /^[^\s^\x00-\x1f\\?*:"";<>|/.][^\x00-\x1f\\?*:"";<>|/]*[^\s^\x00-\x1f\\?*:"";<>|/.]+$/g;
     return !regexp.test(str);
   }
