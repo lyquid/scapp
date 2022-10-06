@@ -8,12 +8,15 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 // for the exitCode
 import process from 'process';
+// for the git init command
+import { execSync } from 'child_process';
 // arguments
 import { Command } from 'commander';
 // configuration interface
 import { ScappConfig } from './config.js';
 // questions
 import Ask from './questions.js';
+import { debug } from 'console';
 
 const program = initCommander();
 const debugMode = program.opts().debug;
@@ -75,6 +78,31 @@ function initCommander(): Command {
   command.option('--debug');
   command.parse();
   return command;
+}
+
+/**
+ * Initializates a git repository in a given folder.
+ * @param where The absolute path to the folder in which you want to init the git repo.
+ */
+function initGit(where: string) {
+  try {
+    const output = execSync('git init', { cwd: where, encoding: 'utf-8' });
+    if (debugMode) console.debug(output);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+/**
+ * Deletes a given file.
+ * @param file The absolute path to the file to delete.
+ */
+function removeFile(file: string) {
+  try {
+    fs.rmSync(file);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 /**
@@ -148,12 +176,19 @@ async function scapp() {
     process.exitCode = 1;
     return;
   }
-  // remove the source folder if needed
+  // source folder
   if (!CONFIG.srcFolder) {
+    // remove the source folder if needed
     removeFolder(path.join(CONFIG.fullPath, SRC_FOLDER));
   } else if (CONFIG.srcFolderName !== SRC_FOLDER) {
     // rename source folder if needed
     renameFolder(path.join(CONFIG.fullPath, SRC_FOLDER), CONFIG.srcFolderName);
+  }
+  // git
+  if (!CONFIG.git) {
+    removeFile(path.join(CONFIG.fullPath, '.gitignore'));
+  } else {
+    initGit(CONFIG.fullPath);
   }
 }
 
