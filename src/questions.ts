@@ -91,13 +91,12 @@ export default class Ask {
    */
   static async FolderName(appName: string): Promise<string> {
     let folderName = '';
-    const regexp = /^[^\s^\x00-\x1f\\?*:"";<>|/.][^\x00-\x1f\\?*:"";<>|/]*[^\s^\x00-\x1f\\?*:"";<>|/.]+$/g;
     await inquirer.prompt([{
       name: 'folderName',
       message: 'Folder name for your C++ app: ',
       default: appName,
       validate: (input: string) => {
-        if (input !== '' && input !== null && !input.match(regexp)) {
+        if (input !== '' && input !== null && this.#ValidFolderName(input)) {
           return 'Invalid folder name.';
         }
         return true;
@@ -162,8 +161,14 @@ export default class Ask {
     let srcFolderName = '';
     await inquirer.prompt([{
       name:    'srcFolderName',
-      message: 'Which name do you prefer for the source folder?',
-      default: 'src'
+      message: 'Name for the source folder:',
+      default: 'src',
+      validate: (input: string) => {
+        if (input !== '' && input !== null && this.#ValidFolderName(input)) {
+          return 'Invalid folder name.';
+        }
+        return true;
+      }
     }])
     .then((answers) => {
       srcFolderName = answers.srcFolderName as string;
@@ -212,5 +217,15 @@ export default class Ask {
       }
     }
     return true;
+  }
+
+  /**
+   * Cheks if a given string is a valid folder name.
+   * @param str The string to check.
+   * @returns True if it's a **GOOD** folder name. False if it's **NOT** a valid folder name.
+   */
+   static #ValidFolderName(str: string): boolean {
+    const regexp = /^[^\s^\x00-\x1f\\?*:"";<>|/.][^\x00-\x1f\\?*:"";<>|/]*[^\s^\x00-\x1f\\?*:"";<>|/.]+$/g;
+    return !regexp.test(str);
   }
 }
