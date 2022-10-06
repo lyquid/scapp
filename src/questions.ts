@@ -157,12 +157,12 @@ export default class Ask {
    * Asks for a name for the source folder.
    * @returns The desired name for the source folder.
    */
-  static async sourceFolderName() {
+  static async sourceFolderName(defaultName: string) {
     let srcFolderName = '';
     await inquirer.prompt([{
       name:    'srcFolderName',
       message: 'Name for the source folder:',
-      default: 'src',
+      default: defaultName,
       validate: (input: string) => {
         if (input !== '' && input !== null && this.#validFolderName(input)) {
           return 'Invalid folder name.';

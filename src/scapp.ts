@@ -110,7 +110,7 @@ async function scapp() {
   config.folderName = await Ask.folderName(config.appName);
   // src folder & it's name
   config.srcFolder = await Ask.sourceFolder();
-  if ((config.srcFolder)) config.srcFolderName = await Ask.sourceFolderName();
+  if ((config.srcFolder)) config.srcFolderName = await Ask.sourceFolderName(config.srcFolderName);
   // git
   config.git = await Ask.git();
   // cmake
