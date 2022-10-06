@@ -87,9 +87,15 @@ function removeFolder(path: string) {
   }
 }
 
-function renameFolder(folder: string, newFolder: string) {
+/**
+ * Renames a given folder.
+ * @param folder The absolute path to the folder to be renamed.
+ * @param newName The new name for the folder.
+ */
+function renameFolder(folder: string, newName: string) {
+  const finalFolder = path.join(folder, '../', newName);
   try {
-    fs.renameSync(folder, newFolder);
+    fs.renameSync(folder, finalFolder);
   } catch (err) {
     console.error(err);
   }
@@ -144,7 +150,7 @@ async function scapp() {
     removeFolder(path.join(config.fullPath, SRC_FOLDER));
   } else if (config.srcFolderName !== SRC_FOLDER) {
     // rename source folder if needed
-    renameFolder(path.join(config.fullPath, SRC_FOLDER), path.join(config.fullPath, config.srcFolderName));
+    renameFolder(path.join(config.fullPath, SRC_FOLDER), config.srcFolderName);
   }
 }
 
