@@ -96,7 +96,7 @@ export default class Ask {
       message: 'Folder name for your C++ app: ',
       default: appName,
       validate: (input: string) => {
-        if (input !== '' && input !== null && !this.#InvalidFolderName(input)) {
+        if (input !== '' && input !== null && this.#ValidFolderName(input)) {
           return 'Invalid folder name.';
         }
         return true;
@@ -164,7 +164,7 @@ export default class Ask {
       message: 'Name for the source folder:',
       default: 'src',
       validate: (input: string) => {
-        if (input !== '' && input !== null && !this.#InvalidFolderName(input)) {
+        if (input !== '' && input !== null && this.#ValidFolderName(input)) {
           return 'Invalid folder name.';
         }
         return true;
@@ -201,16 +201,6 @@ export default class Ask {
   }
 
   /**
-   * Cheks if a given string is a valid folder name.
-   * @param str The string to check.
-   * @returns False if it's a **GOOD** folder name. True if it's **NOT** a valid folder name.
-   */
-   static #InvalidFolderName(str: string) {
-    const regexp = /^[^\s^\x00-\x1f\\?*:"";<>|/.][^\x00-\x1f\\?*:"";<>|/]*[^\s^\x00-\x1f\\?*:"";<>|/.]+$/g;
-    return str.match(regexp);
-  }
-
-  /**
    * Checks if a string is alphanumerical.
    * Inspired from https://stackoverflow.com/questions/4434076/best-way-to-alphanumeric-check-in-javascript
    * @param str The string to check.
@@ -227,5 +217,15 @@ export default class Ask {
       }
     }
     return true;
+  }
+
+  /**
+   * Cheks if a given string is a valid folder name.
+   * @param str The string to check.
+   * @returns True if it's a **GOOD** folder name. False if it's **NOT** a valid folder name.
+   */
+   static #ValidFolderName(str: string): boolean {
+    const regexp = /^[^\s^\x00-\x1f\\?*:"";<>|/.][^\x00-\x1f\\?*:"";<>|/]*[^\s^\x00-\x1f\\?*:"";<>|/.]+$/g;
+    return !regexp.test(str);
   }
 }
