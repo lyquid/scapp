@@ -76,6 +76,18 @@ function initCommander(): Command {
 }
 
 /**
+ * Removes a given folder, even if it's not emtpy.
+ * @param path The absolute path to the folder.
+ */
+function removeFolder(path: string) {
+  try {
+    fs.rmSync(path, { recursive: true, force: true });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+/**
  * Driver code for the app.
  */
 async function scapp() {
@@ -88,7 +100,7 @@ async function scapp() {
     'fullPath':       '',
     'git':            true,
     'srcFolder':      true,
-    'srcFolderName':  '',
+    'srcFolderName':  'src',
     'templateFolder': '../template',
     'vcpkg':          true
   };
@@ -118,7 +130,10 @@ async function scapp() {
     process.exitCode = 1;
     return;
   }
-  // transform template to user input
+  // remove the source folder if needed
+  if (!config.srcFolder) {
+    removeFolder(path.join(config.fullPath, config.srcFolderName));
+  }
 }
 
 scapp();

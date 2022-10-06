@@ -47,7 +47,7 @@ export default class Ask {
    * Asks if the new app should use CMake.
    * @returns True if the app will use CMake. False otherwise.
    */
-   static async cmake(): Promise<boolean> {
+  static async cmake(): Promise<boolean> {
     let useCmake = true;
     await inquirer.prompt([{
       type:    'confirm',
@@ -136,7 +136,7 @@ export default class Ask {
    * Asks if the new app should have a source folder.
    * @returns True if the app will have a source folder. False otherwise.
    */
-   static async sourceFolder(): Promise<boolean> {
+  static async sourceFolder(): Promise<boolean> {
     let useSrcFolder = true;
     await inquirer.prompt([{
       type:    'confirm',
@@ -157,7 +157,7 @@ export default class Ask {
    * Asks for a name for the source folder.
    * @returns The desired name for the source folder.
    */
-   static async sourceFolderName() {
+  static async sourceFolderName() {
     let srcFolderName = '';
     await inquirer.prompt([{
       name:    'srcFolderName',
@@ -183,7 +183,7 @@ export default class Ask {
    * Asks if the new app should use vcpkg.
    * @returns True if the app will use vcpkg. False otherwise.
    */
-   static async vcpkg(): Promise<boolean> {
+  static async vcpkg(): Promise<boolean> {
     let useVcpkg = true;
     await inquirer.prompt([{
       type:    'confirm',
