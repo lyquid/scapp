@@ -134,20 +134,21 @@ function renameFolder(folder: string, newName: string) {
  * Driver code for the app.
  */
 async function scapp() {
-  // default source folder name
-  const SRC_FOLDER = 'src';
   // configuration object initialization
   const CONFIG: ScappConfig = {
-    'appName':        '',
-    'cmake':          true,
-    'editorConfig':   true,
-    'folderName':     '',
-    'fullPath':       '',
-    'git':            true,
-    'srcFolder':      true,
-    'srcFolderName':  SRC_FOLDER,
-    'templateFolder': '../template',
-    'vcpkg':          true
+    'appName':         '',
+    'cmake':           true,
+    'CMAKELISTS_FILE': 'CMakeLists.txt',
+    'editorConfig':    true,
+    'folderName':      '',
+    'fullPath':        '',
+    'git':             true,
+    'GITIGNORE_FILE':  '.gitignore',
+    'srcFolder':       true,
+    'srcFolderName':   '',
+    'SRC_FOLDER':      'src',
+    'TEMPLATE_FOLDER': '../template',
+    'vcpkg':           true
   };
   // app name
   CONFIG.appName = await Ask.appName();
@@ -155,7 +156,7 @@ async function scapp() {
   CONFIG.folderName = await Ask.folderName(CONFIG.appName);
   // src folder & it's name
   CONFIG.srcFolder = await Ask.sourceFolder();
-  if ((CONFIG.srcFolder)) CONFIG.srcFolderName = await Ask.sourceFolderName(SRC_FOLDER);
+  if ((CONFIG.srcFolder)) CONFIG.srcFolderName = await Ask.sourceFolderName(CONFIG.SRC_FOLDER);
   // git
   CONFIG.git = await Ask.git();
   // cmake
@@ -171,23 +172,34 @@ async function scapp() {
     return;
   }
   // copy the contents of template folder to the app folder
-  if (!copyTemplateFolder(CONFIG.templateFolder, CONFIG.fullPath)) {
+  if (!copyTemplateFolder(CONFIG.TEMPLATE_FOLDER, CONFIG.fullPath)) {
     process.exitCode = 1;
     return;
   }
   // source folder
   if (!CONFIG.srcFolder) {
     // remove the source folder if needed
-    removeFolder(path.join(CONFIG.fullPath, SRC_FOLDER));
-  } else if (CONFIG.srcFolderName !== SRC_FOLDER) {
+    removeFolder(path.join(CONFIG.fullPath, CONFIG.SRC_FOLDER));
+  } else if (CONFIG.srcFolderName !== CONFIG.SRC_FOLDER) {
     // rename source folder if needed
-    renameFolder(path.join(CONFIG.fullPath, SRC_FOLDER), CONFIG.srcFolderName);
+    renameFolder(path.join(CONFIG.fullPath, CONFIG.SRC_FOLDER), CONFIG.srcFolderName);
   }
   // git
   if (!CONFIG.git) {
-    removeFile(path.join(CONFIG.fullPath, '.gitignore'));
+    // remove .gitignore if no git used
+    removeFile(path.join(CONFIG.fullPath, CONFIG.GITIGNORE_FILE));
   } else {
+    // git init command to jumpstart a git repo
     initGit(CONFIG.fullPath);
+  }
+  // cmake
+  if (!CONFIG.cmake) {
+    // remove main CMakeLists.txt
+    removeFile(path.join(CONFIG.fullPath, CONFIG.CMAKELISTS_FILE));
+    // remove source folder's CMakeLists.txt
+    if (CONFIG.srcFolder) removeFile(path.join(CONFIG.fullPath, CONFIG.srcFolderName, CONFIG.CMAKELISTS_FILE));
+  } else {
+    // update CMakeLists.txt
   }
 }
 
