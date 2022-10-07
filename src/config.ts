@@ -57,7 +57,11 @@ export interface ScappConfig {
   /**
    * Use vcpkg?
    */
-  vcpkg: boolean
+  vcpkg: boolean,
+  /**
+   * The name of the vcpkg.json file.
+   */
+  VCPKG_JSON: string
 }
 
 export const SCAPP_CONFIG: ScappConfig = {
@@ -74,5 +78,6 @@ export const SCAPP_CONFIG: ScappConfig = {
   'srcFolderName':   '',
   'SRC_FOLDER':      'src',
   'TEMPLATE_FOLDER': '../template',
-  'vcpkg':           true
+  'vcpkg':           true,
+  'VCPKG_JSON':      'vcpkg.json'
 };

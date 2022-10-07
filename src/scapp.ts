@@ -16,6 +16,7 @@ import { Command } from 'commander';
 import { SCAPP_CONFIG } from './config.js';
 import Ask from './questions.js';
 import cmake from './cmake.js';
+import vcpkg from './vcpkg.js';
 
 const program = initCommander();
 const debugMode = program.opts().debug as boolean;
@@ -164,7 +165,7 @@ async function scapp() {
   // git
   if (SCAPP_CONFIG.git) {
     // git init command to jumpstart a git repo
-    initGit(SCAPP_CONFIG.fullPath);
+    // initGit(SCAPP_CONFIG.fullPath);
   } else {
     // remove .gitignore if no git used
     removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.GITIGNORE_FILE));
@@ -178,6 +179,13 @@ async function scapp() {
     removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.CMAKELISTS_FILE));
     // remove source folder's CMakeLists.txt
     if (SCAPP_CONFIG.srcFolder) removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.srcFolderName, SCAPP_CONFIG.CMAKELISTS_FILE));
+  }
+
+  // vcpkg
+  if (SCAPP_CONFIG.vcpkg) {
+    vcpkg(SCAPP_CONFIG);
+  } else {
+    removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.VCPKG_JSON));
   }
 
   // source folder
