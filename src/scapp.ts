@@ -16,6 +16,7 @@ import { Command } from 'commander';
 import { SCAPP_CONFIG } from './config.js';
 import Ask from './questions.js';
 import cmake from './cmake.js';
+import vcpkg from './vcpkg.js';
 
 const program = initCommander();
 const debugMode = program.opts().debug as boolean;
@@ -134,20 +135,13 @@ function renameFolder(folder: string, newName: string) {
  * Driver code for the app.
  */
 async function scapp() {
-  // app name
-  SCAPP_CONFIG.appName = await Ask.appName();
-  // app folder name
+  SCAPP_CONFIG.appName    = await Ask.appName();
   SCAPP_CONFIG.folderName = await Ask.folderName(SCAPP_CONFIG.appName);
-  // src folder & it's name
-  SCAPP_CONFIG.srcFolder = await Ask.sourceFolder();
+  SCAPP_CONFIG.srcFolder  = await Ask.sourceFolder();
   if ((SCAPP_CONFIG.srcFolder)) SCAPP_CONFIG.srcFolderName = await Ask.sourceFolderName(SCAPP_CONFIG.SRC_FOLDER);
-  // git
-  SCAPP_CONFIG.git = await Ask.git();
-  // cmake
-  SCAPP_CONFIG.cmake = await Ask.cmake();
-  // vcpkg
-  SCAPP_CONFIG.vcpkg = await Ask.vcpkg();
-  // editorconfig
+  SCAPP_CONFIG.git          = await Ask.git();
+  SCAPP_CONFIG.cmake        = await Ask.cmake();
+  SCAPP_CONFIG.vcpkg        = await Ask.vcpkg();
   SCAPP_CONFIG.editorConfig = await Ask.editorConfig();
 
   // try to create the folder app folder
@@ -156,10 +150,16 @@ async function scapp() {
     process.exitCode = 1;
     return;
   }
+
   // copy the contents of template folder to the app folder
   if (!copyTemplateFolder(SCAPP_CONFIG.TEMPLATE_FOLDER, SCAPP_CONFIG.fullPath)) {
     process.exitCode = 1;
     return;
+  }
+
+  // editorconfig
+  if (!SCAPP_CONFIG.editorConfig) {
+    removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.EDITOR_CONFIG));
   }
 
   // git
@@ -179,6 +179,13 @@ async function scapp() {
     removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.CMAKELISTS_FILE));
     // remove source folder's CMakeLists.txt
     if (SCAPP_CONFIG.srcFolder) removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.srcFolderName, SCAPP_CONFIG.CMAKELISTS_FILE));
+  }
+
+  // vcpkg
+  if (SCAPP_CONFIG.vcpkg) {
+    vcpkg(SCAPP_CONFIG);
+  } else {
+    removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.VCPKG_JSON));
   }
 
   // source folder

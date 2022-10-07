@@ -19,6 +19,10 @@ export interface ScappConfig {
    */
   editorConfig: boolean,
   /**
+   * Editorconfig file name.
+   */
+  readonly EDITOR_CONFIG: string,
+  /**
    * Folder name for the app to scaffold.
    */
   folderName: string,
@@ -53,7 +57,11 @@ export interface ScappConfig {
   /**
    * Use vcpkg?
    */
-  vcpkg: boolean
+  vcpkg: boolean,
+  /**
+   * The name of the vcpkg.json file.
+   */
+  VCPKG_JSON: string
 }
 
 export const SCAPP_CONFIG: ScappConfig = {
@@ -61,6 +69,7 @@ export const SCAPP_CONFIG: ScappConfig = {
   'cmake':           true,
   'CMAKELISTS_FILE': 'CMakeLists.txt',
   'editorConfig':    true,
+  'EDITOR_CONFIG':   '.editorconfig',
   'folderName':      '',
   'fullPath':        '',
   'git':             true,
@@ -69,5 +78,6 @@ export const SCAPP_CONFIG: ScappConfig = {
   'srcFolderName':   '',
   'SRC_FOLDER':      'src',
   'TEMPLATE_FOLDER': '../template',
-  'vcpkg':           true
+  'vcpkg':           true,
+  'VCPKG_JSON':      'vcpkg.json'
 };
