@@ -1,7 +1,7 @@
 /**
  * Interface used to store configuration options for the app.
  */
-interface ScappConfig {
+export interface ScappConfig {
   /**
    * The name of the app to scaffold.
    */

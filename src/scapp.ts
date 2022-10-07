@@ -12,10 +12,10 @@ import process from 'process';
 import { execSync } from 'child_process';
 // arguments
 import { Command } from 'commander';
-// configuration
+// own imports
 import { SCAPP_CONFIG } from './config.js';
-// questions
 import Ask from './questions.js';
+import cmake from './cmake.js';
 
 const program = initCommander();
 const debugMode = program.opts().debug as boolean;
@@ -149,6 +149,7 @@ async function scapp() {
   SCAPP_CONFIG.vcpkg = await Ask.vcpkg();
   // editorconfig
   SCAPP_CONFIG.editorConfig = await Ask.editorConfig();
+
   // try to create the folder app folder
   SCAPP_CONFIG.fullPath = path.join(process.cwd(), SCAPP_CONFIG.folderName);
   if (!createAppFolder(SCAPP_CONFIG.fullPath)) {
@@ -160,6 +161,26 @@ async function scapp() {
     process.exitCode = 1;
     return;
   }
+
+  // git
+  if (SCAPP_CONFIG.git) {
+    // git init command to jumpstart a git repo
+    initGit(SCAPP_CONFIG.fullPath);
+  } else {
+    // remove .gitignore if no git used
+    removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.GITIGNORE_FILE));
+  }
+
+  // cmake
+  if (SCAPP_CONFIG.cmake) {
+    cmake(SCAPP_CONFIG);
+  } else {
+    // remove main CMakeLists.txt
+    removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.CMAKELISTS_FILE));
+    // remove source folder's CMakeLists.txt
+    if (SCAPP_CONFIG.srcFolder) removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.srcFolderName, SCAPP_CONFIG.CMAKELISTS_FILE));
+  }
+
   // source folder
   if (!SCAPP_CONFIG.srcFolder) {
     // remove the source folder if needed
@@ -167,23 +188,6 @@ async function scapp() {
   } else if (SCAPP_CONFIG.srcFolderName !== SCAPP_CONFIG.SRC_FOLDER) {
     // rename source folder if needed
     renameFolder(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.SRC_FOLDER), SCAPP_CONFIG.srcFolderName);
-  }
-  // git
-  if (!SCAPP_CONFIG.git) {
-    // remove .gitignore if no git used
-    removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.GITIGNORE_FILE));
-  } else {
-    // git init command to jumpstart a git repo
-    initGit(SCAPP_CONFIG.fullPath);
-  }
-  // cmake
-  if (!SCAPP_CONFIG.cmake) {
-    // remove main CMakeLists.txt
-    removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.CMAKELISTS_FILE));
-    // remove source folder's CMakeLists.txt
-    if (SCAPP_CONFIG.srcFolder) removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.srcFolderName, SCAPP_CONFIG.CMAKELISTS_FILE));
-  } else {
-    // update CMakeLists.txt
   }
 }
 
