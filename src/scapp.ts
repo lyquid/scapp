@@ -16,10 +16,9 @@ import { Command } from 'commander';
 import { ScappConfig } from './config.js';
 // questions
 import Ask from './questions.js';
-import { debug } from 'console';
 
 const program = initCommander();
-const debugMode = program.opts().debug;
+const debugMode = program.opts().debug as boolean;
 
 /**
  * Copies the template folder to the user's desired directory.
