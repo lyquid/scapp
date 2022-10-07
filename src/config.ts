@@ -19,6 +19,10 @@ export interface ScappConfig {
    */
   editorConfig: boolean,
   /**
+   * Editorconfig file name.
+   */
+  readonly EDITOR_CONFIG: string,
+  /**
    * Folder name for the app to scaffold.
    */
   folderName: string,
@@ -61,6 +65,7 @@ export const SCAPP_CONFIG: ScappConfig = {
   'cmake':           true,
   'CMAKELISTS_FILE': 'CMakeLists.txt',
   'editorConfig':    true,
+  'EDITOR_CONFIG':   '.editorconfig',
   'folderName':      '',
   'fullPath':        '',
   'git':             true,
