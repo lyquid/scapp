@@ -12,8 +12,8 @@ import process from 'process';
 import { execSync } from 'child_process';
 // arguments
 import { Command } from 'commander';
-// configuration interface
-import { ScappConfig } from './config.js';
+// configuration
+import { SCAPP_CONFIG } from './config.js';
 // questions
 import Ask from './questions.js';
 
@@ -134,70 +134,54 @@ function renameFolder(folder: string, newName: string) {
  * Driver code for the app.
  */
 async function scapp() {
-  // configuration object initialization
-  const CONFIG: ScappConfig = {
-    'appName':         '',
-    'cmake':           true,
-    'CMAKELISTS_FILE': 'CMakeLists.txt',
-    'editorConfig':    true,
-    'folderName':      '',
-    'fullPath':        '',
-    'git':             true,
-    'GITIGNORE_FILE':  '.gitignore',
-    'srcFolder':       true,
-    'srcFolderName':   '',
-    'SRC_FOLDER':      'src',
-    'TEMPLATE_FOLDER': '../template',
-    'vcpkg':           true
-  };
   // app name
-  CONFIG.appName = await Ask.appName();
+  SCAPP_CONFIG.appName = await Ask.appName();
   // app folder name
-  CONFIG.folderName = await Ask.folderName(CONFIG.appName);
+  SCAPP_CONFIG.folderName = await Ask.folderName(SCAPP_CONFIG.appName);
   // src folder & it's name
-  CONFIG.srcFolder = await Ask.sourceFolder();
-  if ((CONFIG.srcFolder)) CONFIG.srcFolderName = await Ask.sourceFolderName(CONFIG.SRC_FOLDER);
+  SCAPP_CONFIG.srcFolder = await Ask.sourceFolder();
+  if ((SCAPP_CONFIG.srcFolder)) SCAPP_CONFIG.srcFolderName = await Ask.sourceFolderName(SCAPP_CONFIG.SRC_FOLDER);
   // git
-  CONFIG.git = await Ask.git();
+  SCAPP_CONFIG.git = await Ask.git();
   // cmake
-  CONFIG.cmake = await Ask.cmake();
+  SCAPP_CONFIG.cmake = await Ask.cmake();
   // vcpkg
-  CONFIG.vcpkg = await Ask.vcpkg();
+  SCAPP_CONFIG.vcpkg = await Ask.vcpkg();
   // editorconfig
-  CONFIG.editorConfig = await Ask.editorConfig();
+  SCAPP_CONFIG.editorConfig = await Ask.editorConfig();
   // try to create the folder app folder
-  CONFIG.fullPath = path.join(process.cwd(), CONFIG.folderName);
-  if (!createAppFolder(CONFIG.fullPath)) {
+  SCAPP_CONFIG.fullPath = path.join(process.cwd(), SCAPP_CONFIG.folderName);
+  if (!createAppFolder(SCAPP_CONFIG.fullPath)) {
     process.exitCode = 1;
     return;
   }
   // copy the contents of template folder to the app folder
-  if (!copyTemplateFolder(CONFIG.TEMPLATE_FOLDER, CONFIG.fullPath)) {
+  if (!copyTemplateFolder(SCAPP_CONFIG.TEMPLATE_FOLDER, SCAPP_CONFIG.fullPath)) {
     process.exitCode = 1;
     return;
   }
   // source folder
-  if (!CONFIG.srcFolder) {
+  if (!SCAPP_CONFIG.srcFolder) {
     // remove the source folder if needed
-    removeFolder(path.join(CONFIG.fullPath, CONFIG.SRC_FOLDER));
-  } else if (CONFIG.srcFolderName !== CONFIG.SRC_FOLDER) {
+    removeFolder(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.SRC_FOLDER));
+  } else if (SCAPP_CONFIG.srcFolderName !== SCAPP_CONFIG.SRC_FOLDER) {
     // rename source folder if needed
-    renameFolder(path.join(CONFIG.fullPath, CONFIG.SRC_FOLDER), CONFIG.srcFolderName);
+    renameFolder(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.SRC_FOLDER), SCAPP_CONFIG.srcFolderName);
   }
   // git
-  if (!CONFIG.git) {
+  if (!SCAPP_CONFIG.git) {
     // remove .gitignore if no git used
-    removeFile(path.join(CONFIG.fullPath, CONFIG.GITIGNORE_FILE));
+    removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.GITIGNORE_FILE));
   } else {
     // git init command to jumpstart a git repo
-    initGit(CONFIG.fullPath);
+    initGit(SCAPP_CONFIG.fullPath);
   }
   // cmake
-  if (!CONFIG.cmake) {
+  if (!SCAPP_CONFIG.cmake) {
     // remove main CMakeLists.txt
-    removeFile(path.join(CONFIG.fullPath, CONFIG.CMAKELISTS_FILE));
+    removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.CMAKELISTS_FILE));
     // remove source folder's CMakeLists.txt
-    if (CONFIG.srcFolder) removeFile(path.join(CONFIG.fullPath, CONFIG.srcFolderName, CONFIG.CMAKELISTS_FILE));
+    if (SCAPP_CONFIG.srcFolder) removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.srcFolderName, SCAPP_CONFIG.CMAKELISTS_FILE));
   } else {
     // update CMakeLists.txt
   }

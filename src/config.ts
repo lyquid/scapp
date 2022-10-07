@@ -1,7 +1,7 @@
 /**
  * Interface used to store configuration options for the app.
  */
-export interface ScappConfig {
+interface ScappConfig {
   /**
    * The name of the app to scaffold.
    */
@@ -55,3 +55,19 @@ export interface ScappConfig {
    */
   vcpkg: boolean
 }
+
+export const SCAPP_CONFIG: ScappConfig = {
+  'appName':         '',
+  'cmake':           true,
+  'CMAKELISTS_FILE': 'CMakeLists.txt',
+  'editorConfig':    true,
+  'folderName':      '',
+  'fullPath':        '',
+  'git':             true,
+  'GITIGNORE_FILE':  '.gitignore',
+  'srcFolder':       true,
+  'srcFolderName':   '',
+  'SRC_FOLDER':      'src',
+  'TEMPLATE_FOLDER': '../template',
+  'vcpkg':           true
+};
