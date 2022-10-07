@@ -12,7 +12,7 @@ This is a CLI app that asks the user for information like app name, version, use
 
 ## Why?
 
-If your are like me and likes to start new C++ projects so often to try new things, maybe you are tired of always setup the app before you can even code something.
+If your are like me and enjoy starting new C++ projects to try new things, maybe you are tired of always setup the app before you can even code something.
 
 That's the reason why I've created this tool: *laziness*.
 
