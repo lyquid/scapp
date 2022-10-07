@@ -18,7 +18,7 @@ That's the reason why I've created this tool: *laziness*.
 
 ## Features
 
-My plan is, for the moment, to make the app use the tools I use, which are: **CMake**, **editorconfig**, **Git**, and **vcpkg**.
+My plan, for now, is to make the app use the tools I use, which are: **CMake**, **editorconfig**, **Git**, and **vcpkg**.
 
 I usually code with [VSCode](https://code.visualstudio.com/) editor with a bunch of C++ [extensions](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack) that allow me to compile and run the app from the editor, so no support for MSVC or make, *yet*.
 
