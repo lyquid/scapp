@@ -203,7 +203,7 @@ export default class Ask {
 
   /**
    * Checks if a string is alphanumerical.
-   * Inspired from https://stackoverflow.com/questions/4434076/best-way-to-alphanumeric-check-in-javascript
+   * Inspired from [here](https://stackoverflow.com/questions/4434076/best-way-to-alphanumeric-check-in-javascript).
    * @param str The string to check.
    * @returns True if the string is alphanumerical.
    */

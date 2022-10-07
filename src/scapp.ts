@@ -12,10 +12,10 @@ import process from 'process';
 import { execSync } from 'child_process';
 // arguments
 import { Command } from 'commander';
-// configuration interface
-import { ScappConfig } from './config.js';
-// questions
+// own imports
+import { SCAPP_CONFIG } from './config.js';
 import Ask from './questions.js';
+import cmake from './cmake.js';
 
 const program = initCommander();
 const debugMode = program.opts().debug as boolean;
@@ -134,60 +134,60 @@ function renameFolder(folder: string, newName: string) {
  * Driver code for the app.
  */
 async function scapp() {
-  // default source folder name
-  const SRC_FOLDER = 'src';
-  // configuration object initialization
-  const CONFIG: ScappConfig = {
-    'appName':        '',
-    'cmake':          true,
-    'editorConfig':   true,
-    'folderName':     '',
-    'fullPath':       '',
-    'git':            true,
-    'srcFolder':      true,
-    'srcFolderName':  SRC_FOLDER,
-    'templateFolder': '../template',
-    'vcpkg':          true
-  };
   // app name
-  CONFIG.appName = await Ask.appName();
+  SCAPP_CONFIG.appName = await Ask.appName();
   // app folder name
-  CONFIG.folderName = await Ask.folderName(CONFIG.appName);
+  SCAPP_CONFIG.folderName = await Ask.folderName(SCAPP_CONFIG.appName);
   // src folder & it's name
-  CONFIG.srcFolder = await Ask.sourceFolder();
-  if ((CONFIG.srcFolder)) CONFIG.srcFolderName = await Ask.sourceFolderName(SRC_FOLDER);
+  SCAPP_CONFIG.srcFolder = await Ask.sourceFolder();
+  if ((SCAPP_CONFIG.srcFolder)) SCAPP_CONFIG.srcFolderName = await Ask.sourceFolderName(SCAPP_CONFIG.SRC_FOLDER);
   // git
-  CONFIG.git = await Ask.git();
+  SCAPP_CONFIG.git = await Ask.git();
   // cmake
-  CONFIG.cmake = await Ask.cmake();
+  SCAPP_CONFIG.cmake = await Ask.cmake();
   // vcpkg
-  CONFIG.vcpkg = await Ask.vcpkg();
+  SCAPP_CONFIG.vcpkg = await Ask.vcpkg();
   // editorconfig
-  CONFIG.editorConfig = await Ask.editorConfig();
+  SCAPP_CONFIG.editorConfig = await Ask.editorConfig();
+
   // try to create the folder app folder
-  CONFIG.fullPath = path.join(process.cwd(), CONFIG.folderName);
-  if (!createAppFolder(CONFIG.fullPath)) {
+  SCAPP_CONFIG.fullPath = path.join(process.cwd(), SCAPP_CONFIG.folderName);
+  if (!createAppFolder(SCAPP_CONFIG.fullPath)) {
     process.exitCode = 1;
     return;
   }
   // copy the contents of template folder to the app folder
-  if (!copyTemplateFolder(CONFIG.templateFolder, CONFIG.fullPath)) {
+  if (!copyTemplateFolder(SCAPP_CONFIG.TEMPLATE_FOLDER, SCAPP_CONFIG.fullPath)) {
     process.exitCode = 1;
     return;
   }
-  // source folder
-  if (!CONFIG.srcFolder) {
-    // remove the source folder if needed
-    removeFolder(path.join(CONFIG.fullPath, SRC_FOLDER));
-  } else if (CONFIG.srcFolderName !== SRC_FOLDER) {
-    // rename source folder if needed
-    renameFolder(path.join(CONFIG.fullPath, SRC_FOLDER), CONFIG.srcFolderName);
-  }
+
   // git
-  if (!CONFIG.git) {
-    removeFile(path.join(CONFIG.fullPath, '.gitignore'));
+  if (SCAPP_CONFIG.git) {
+    // git init command to jumpstart a git repo
+    initGit(SCAPP_CONFIG.fullPath);
   } else {
-    initGit(CONFIG.fullPath);
+    // remove .gitignore if no git used
+    removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.GITIGNORE_FILE));
+  }
+
+  // cmake
+  if (SCAPP_CONFIG.cmake) {
+    cmake(SCAPP_CONFIG);
+  } else {
+    // remove main CMakeLists.txt
+    removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.CMAKELISTS_FILE));
+    // remove source folder's CMakeLists.txt
+    if (SCAPP_CONFIG.srcFolder) removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.srcFolderName, SCAPP_CONFIG.CMAKELISTS_FILE));
+  }
+
+  // source folder
+  if (!SCAPP_CONFIG.srcFolder) {
+    // remove the source folder if needed
+    removeFolder(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.SRC_FOLDER));
+  } else if (SCAPP_CONFIG.srcFolderName !== SCAPP_CONFIG.SRC_FOLDER) {
+    // rename source folder if needed
+    renameFolder(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.SRC_FOLDER), SCAPP_CONFIG.srcFolderName);
   }
 }
 

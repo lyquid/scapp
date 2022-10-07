@@ -11,6 +11,10 @@ export interface ScappConfig {
    */
   cmake: boolean,
   /**
+   * Default name for the CMakeLists.txt files.
+   */
+  readonly CMAKELISTS_FILE: string,
+  /**
    * Use editorconfig?
    */
   editorConfig: boolean,
@@ -27,6 +31,10 @@ export interface ScappConfig {
    */
   git: boolean,
   /**
+   * Default name for gitignore file.
+   */
+  readonly GITIGNORE_FILE: string,
+  /**
    * Make a source folder?
    */
   srcFolder: boolean,
@@ -35,11 +43,31 @@ export interface ScappConfig {
    */
   srcFolderName: string,
   /**
-   * Template folder name.
+   * Default source folder name.
    */
-  templateFolder: string,
+  readonly SRC_FOLDER: string,
+  /**
+   * Default template folder relative to the build/src directories.
+   */
+  readonly TEMPLATE_FOLDER: string,
   /**
    * Use vcpkg?
    */
   vcpkg: boolean
 }
+
+export const SCAPP_CONFIG: ScappConfig = {
+  'appName':         '',
+  'cmake':           true,
+  'CMAKELISTS_FILE': 'CMakeLists.txt',
+  'editorConfig':    true,
+  'folderName':      '',
+  'fullPath':        '',
+  'git':             true,
+  'GITIGNORE_FILE':  '.gitignore',
+  'srcFolder':       true,
+  'srcFolderName':   '',
+  'SRC_FOLDER':      'src',
+  'TEMPLATE_FOLDER': '../template',
+  'vcpkg':           true
+};
