@@ -165,7 +165,7 @@ async function scapp() {
   // git
   if (SCAPP_CONFIG.git) {
     // git init command to jumpstart a git repo
-    // initGit(SCAPP_CONFIG.fullPath);
+    initGit(SCAPP_CONFIG.fullPath);
   } else {
     // remove .gitignore if no git used
     removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.GITIGNORE_FILE));
