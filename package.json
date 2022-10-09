@@ -32,6 +32,7 @@
   "keywords": [
     "cplusplus",
     "c++",
+    "cli",
     "cmake",
     "vcpkg",
     "scaffold",
