@@ -8,6 +8,8 @@ Create a scaffold for your C++ app in seconds, supporting [Git](https://git-scm.
 
 ## How?
 
+Install the app like this: `npm i scapp -g`.
+
 This is a CLI app that asks the user for information like app name, version, use editorconfig or not, etc. Then scaffolds a folder with all that input.
 
 ## Why?
