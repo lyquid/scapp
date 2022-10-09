@@ -74,7 +74,7 @@ function createAppFolder(fullPath: string): boolean {
  */
 function initCommander(): Command {
   const command = new Command();
-  command.name('scapp').description('C++ scaffolding app').version('1.2.0');
+  command.name('scapp').description('C++ scaffolding app').version('1.2.1');
   command.option('--debug');
   command.parse();
   return command;

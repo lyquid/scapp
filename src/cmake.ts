@@ -28,10 +28,8 @@ export default function cmake(SCAPP_CONFIG: ScappConfig) {
       cmakeListsTxt = cmakeListsTxt.replace('cxx_std_17', `cxx_std_${SCAPP_CONFIG.standard}`);
       // main file
       if (SCAPP_CONFIG.addMain) {
-        // replace the main file if needed
-        if (SCAPP_CONFIG.mainFileName !== SCAPP_CONFIG.MAIN_FILE_NAME) {
-          cmakeListsTxt = cmakeListsTxt.replace(SCAPP_CONFIG.MAIN_FILE_NAME, SCAPP_CONFIG.mainFileName);
-        }
+        // replace the main file name
+        cmakeListsTxt = cmakeListsTxt.replace('../' + SCAPP_CONFIG.MAIN_FILE_NAME, SCAPP_CONFIG.mainFileName);
       } else {
         // no main file
         cmakeListsTxt = cmakeListsTxt.replace('../main.cpp', '#../main.cpp');
