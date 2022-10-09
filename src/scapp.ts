@@ -160,7 +160,9 @@ async function scapp() {
   }
 
   // main file
-  if (!SCAPP_CONFIG.addMain) {
+  if (SCAPP_CONFIG.addMain) {
+    renameFolder(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.MAIN_FILE_NAME), SCAPP_CONFIG.mainFileName);
+  } else {
     removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.MAIN_FILE_NAME));
   }
 
@@ -172,7 +174,7 @@ async function scapp() {
   // git
   if (SCAPP_CONFIG.git) {
     // git init command to jumpstart a git repo
-    // initGit(SCAPP_CONFIG.fullPath);
+    initGit(SCAPP_CONFIG.fullPath);
   } else {
     // remove .gitignore if no git used
     removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.GITIGNORE_FILE));
