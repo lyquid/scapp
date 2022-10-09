@@ -24,7 +24,7 @@ I usually code with [VSCode](https://code.visualstudio.com/) editor with a bunch
 
 - [x] Adds a pretty complete `.gitignore` generated from [here](https://www.toptal.com/developers/gitignore?templates=windows,macos,linux,node,c++,visualstudiocode,emacs,vim,visualstudio,cmake,vcpkg,intellij+all).
 - [x] `.editorconfig`.
-- [ ] Various `CMakeLists.txt` already configured.
-- [ ] A `vcpkg.json` also minimally configured.
+- [x] Various `CMakeLists.txt` already configured.
+- [x] A `vcpkg.json` also minimally configured.
 - [ ] Which C++ standard to use (ie: C++20 (ISO/IEC 14882:2020)).
 - [ ] Compiler flags.
