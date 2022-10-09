@@ -28,5 +28,5 @@ I usually code with [VSCode](https://code.visualstudio.com/) editor with a bunch
 - [x] `.editorconfig`.
 - [x] Various `CMakeLists.txt` already configured.
 - [x] A `vcpkg.json` also minimally configured.
-- [ ] Which C++ standard to use (ie: C++20 (ISO/IEC 14882:2020)).
+- [x] Which C++ standard to use (ie: C++20 (ISO/IEC 14882:2020)).
 - [ ] Compiler flags.
