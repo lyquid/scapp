@@ -44,7 +44,7 @@
   "bugs": {
     "url": "https://github.com/lyquid/scapp/issues"
   },
-  "homepage": "https://lyquid.github.io/scapp/",
+  "homepage": "https://lyquid.github.io/scapp",
   "devDependencies": {
     "@types/inquirer": "^9.0.2",
     "@types/jest": "^29.1.0",
