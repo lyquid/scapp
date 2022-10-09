@@ -24,6 +24,16 @@ export default function cmake(SCAPP_CONFIG: ScappConfig) {
       // add config from the src/CMakeLists.txt
       const srcCmakeListsTxt = fs.readFileSync(srcCmakeListsPath, 'utf8');
       cmakeListsTxt = cmakeListsTxt + '\n' + srcCmakeListsTxt;
+      // main file
+      if (SCAPP_CONFIG.addMain) {
+        // replace the main file if needed
+        if (SCAPP_CONFIG.mainFileName !== SCAPP_CONFIG.MAIN_FILE_NAME) {
+          cmakeListsTxt = cmakeListsTxt.replace(SCAPP_CONFIG.MAIN_FILE_NAME, SCAPP_CONFIG.mainFileName);
+        }
+      } else {
+        // no main file
+        cmakeListsTxt = cmakeListsTxt.replace('../main.cpp', '#../main.cpp');
+      }
     }
     // replace the app name
     cmakeListsTxt = cmakeListsTxt.replaceAll('AWESOME_CPP_CMAKE_NAME', SCAPP_CONFIG.appName);
@@ -38,6 +48,16 @@ export default function cmake(SCAPP_CONFIG: ScappConfig) {
       let srcCmakeListsTxt = fs.readFileSync(srcCmakeListsPath, 'utf8');
       // replace the app name
       srcCmakeListsTxt = srcCmakeListsTxt.replaceAll('AWESOME_CPP_CMAKE_NAME', SCAPP_CONFIG.appName);
+      // main file
+      if (SCAPP_CONFIG.addMain) {
+        // replace the main file if needed
+        if (SCAPP_CONFIG.mainFileName !== SCAPP_CONFIG.MAIN_FILE_NAME) {
+          srcCmakeListsTxt = srcCmakeListsTxt.replace(SCAPP_CONFIG.MAIN_FILE_NAME, SCAPP_CONFIG.mainFileName);
+        }
+      } else {
+        // no main file
+        srcCmakeListsTxt = srcCmakeListsTxt.replace('../main.cpp', '#../main.cpp');
+      }
       // write back to the file
       fs.writeFileSync(srcCmakeListsPath, srcCmakeListsTxt);
     } catch (err) {
