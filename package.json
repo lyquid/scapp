@@ -1,6 +1,6 @@
 {
   "name": "scapp",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "C++ scaffolding app",
   "main": "build/scapp.js",
   "types": "build/scapp.d.ts",
@@ -23,7 +23,8 @@
     "postversion": "git push && git push --tags"
   },
   "files": [
-    "build/**/*"
+    "build/**/*",
+    "template/**/*"
   ],
   "repository": {
     "type": "git",
