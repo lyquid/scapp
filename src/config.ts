@@ -3,6 +3,10 @@
  */
 export interface ScappConfig {
   /**
+   * Add a main.cpp file?
+   */
+  addMain: boolean,
+  /**
    * The name of the app to scaffold.
    */
   appName: string,
@@ -39,6 +43,14 @@ export interface ScappConfig {
    */
   readonly GITIGNORE_FILE: string,
   /**
+   * The name of the main.cpp file.
+   */
+  mainFileName: string,
+  /**
+   * Default name for main file.
+   */
+  readonly MAIN_FILE_NAME: string,
+  /**
    * Make a source folder?
    */
   srcFolder: boolean,
@@ -65,6 +77,7 @@ export interface ScappConfig {
 }
 
 export const SCAPP_CONFIG: ScappConfig = {
+  'addMain':         true,
   'appName':         '',
   'cmake':           true,
   'CMAKELISTS_FILE': 'CMakeLists.txt',
@@ -74,6 +87,8 @@ export const SCAPP_CONFIG: ScappConfig = {
   'fullPath':        '',
   'git':             true,
   'GITIGNORE_FILE':  '.gitignore',
+  'mainFileName':    '',
+  'MAIN_FILE_NAME':  'main.cpp',
   'srcFolder':       true,
   'srcFolderName':   '',
   'SRC_FOLDER':      'src',

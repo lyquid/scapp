@@ -138,7 +138,9 @@ async function scapp() {
   SCAPP_CONFIG.appName    = await Ask.appName();
   SCAPP_CONFIG.folderName = await Ask.folderName(SCAPP_CONFIG.appName);
   SCAPP_CONFIG.srcFolder  = await Ask.sourceFolder();
-  if ((SCAPP_CONFIG.srcFolder)) SCAPP_CONFIG.srcFolderName = await Ask.sourceFolderName(SCAPP_CONFIG.SRC_FOLDER);
+  if (SCAPP_CONFIG.srcFolder) SCAPP_CONFIG.srcFolderName = await Ask.sourceFolderName(SCAPP_CONFIG.SRC_FOLDER);
+  SCAPP_CONFIG.addMain      = await Ask.addMain();
+  if (SCAPP_CONFIG.addMain) SCAPP_CONFIG.mainFileName = await Ask.mainFileName(SCAPP_CONFIG.MAIN_FILE_NAME);
   SCAPP_CONFIG.git          = await Ask.git();
   SCAPP_CONFIG.cmake        = await Ask.cmake();
   SCAPP_CONFIG.vcpkg        = await Ask.vcpkg();
@@ -157,6 +159,11 @@ async function scapp() {
     return;
   }
 
+  // main file
+  if (!SCAPP_CONFIG.addMain) {
+    removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.MAIN_FILE_NAME));
+  }
+
   // editorconfig
   if (!SCAPP_CONFIG.editorConfig) {
     removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.EDITOR_CONFIG));
@@ -165,7 +172,7 @@ async function scapp() {
   // git
   if (SCAPP_CONFIG.git) {
     // git init command to jumpstart a git repo
-    initGit(SCAPP_CONFIG.fullPath);
+    // initGit(SCAPP_CONFIG.fullPath);
   } else {
     // remove .gitignore if no git used
     removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.GITIGNORE_FILE));

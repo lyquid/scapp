@@ -6,6 +6,27 @@ import inquirer from 'inquirer';
 export default class Ask {
 
   /**
+   * Asks if the new app should have a main file.
+   * @returns True if the app will have a main file. False otherwise.
+   */
+  static async addMain(): Promise<boolean> {
+    let addMain = true;
+    await inquirer.prompt([{
+      type:    'confirm',
+      name:    'addMain',
+      message: 'Add a main file:',
+      default: true
+    }])
+    .then((answers) => {
+      addMain = answers.addMain as boolean;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+    return addMain;
+  }
+
+  /**
    * Ask users to input a name for their app.
    * Must begin with an alphanumeric char
    * and contain only alphanumeric, underscores and/or dashes.
@@ -133,6 +154,33 @@ export default class Ask {
   }
 
   /**
+   * Asks for a name for the main file.
+   * @param defaultName The default name for the main file.
+   * @returns The desired name for the main file.
+   */
+  static async mainFileName(defaultName: string): Promise<string> {
+    let mainFileName = '';
+    await inquirer.prompt([{
+      name:    'mainFileName',
+      message: 'Name for the main file:',
+      default: defaultName,
+      validate: (input: string) => {
+        if (input !== '' && input !== null && this.#validFolderName(input)) {
+          return 'Invalid file name.';
+        }
+        return true;
+      }
+    }])
+    .then((answers) => {
+      mainFileName = answers.mainFileName as string;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+    return mainFileName;
+  }
+
+  /**
    * Asks if the new app should have a source folder.
    * @returns True if the app will have a source folder. False otherwise.
    */
@@ -158,7 +206,7 @@ export default class Ask {
    * @param defaultName The default name for the source folder.
    * @returns The desired name for the source folder.
    */
-  static async sourceFolderName(defaultName: string) {
+  static async sourceFolderName(defaultName: string): Promise<string> {
     let srcFolderName = '';
     await inquirer.prompt([{
       name:    'srcFolderName',
