@@ -24,6 +24,8 @@ export default function cmake(SCAPP_CONFIG: ScappConfig) {
       // add config from the src/CMakeLists.txt
       const srcCmakeListsTxt = fs.readFileSync(srcCmakeListsPath, 'utf8');
       cmakeListsTxt = cmakeListsTxt + '\n' + srcCmakeListsTxt;
+      // src/CMakeLists.txt standard
+      cmakeListsTxt = cmakeListsTxt.replace('cxx_std_17', `cxx_std_${SCAPP_CONFIG.standard}`);
       // main file
       if (SCAPP_CONFIG.addMain) {
         // replace the main file if needed
@@ -37,6 +39,8 @@ export default function cmake(SCAPP_CONFIG: ScappConfig) {
     }
     // replace the app name
     cmakeListsTxt = cmakeListsTxt.replaceAll('AWESOME_CPP_CMAKE_NAME', SCAPP_CONFIG.appName);
+    // replace the C++ standard
+    cmakeListsTxt = cmakeListsTxt.replace('CMAKE_CXX_STANDARD 17', `CMAKE_CXX_STANDARD ${SCAPP_CONFIG.standard}`);
     // write back to the file
     fs.writeFileSync(mainCmakeListsPath, cmakeListsTxt);
   } catch (err) {
@@ -58,6 +62,8 @@ export default function cmake(SCAPP_CONFIG: ScappConfig) {
         // no main file
         srcCmakeListsTxt = srcCmakeListsTxt.replace('../main.cpp', '#../main.cpp');
       }
+      // replace the C++ standard
+      srcCmakeListsTxt = srcCmakeListsTxt.replace('cxx_std_17', `cxx_std_${SCAPP_CONFIG.standard}`);
       // write back to the file
       fs.writeFileSync(srcCmakeListsPath, srcCmakeListsTxt);
     } catch (err) {

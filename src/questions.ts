@@ -229,6 +229,45 @@ export default class Ask {
   }
 
   /**
+   * Asks for the C++ standard to use.
+   * @standards An array of available standards.
+   * @returns The standard to use.
+   */
+  static async standard(standards: string[]): Promise<string> {
+    let standard = '';
+    await inquirer.prompt([{
+      type:    'list',
+      name:    'standard',
+      message: 'C++ standard:',
+      choices: standards,
+      default: 'C++17',
+    }])
+    .then((answers) => {
+      switch (answers.standard as string) {
+        case 'C++98':
+          standard = '98';
+          break;
+        case 'C++11':
+          standard = '11';
+          break;
+        case 'C++14':
+          standard = '14';
+          break;
+        case 'C++17':
+          standard = '17';
+          break;
+        case 'C++20':
+          standard = '20';
+          break;
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+    return standard;
+  }
+
+  /**
    * Asks if the new app should use vcpkg.
    * @returns True if the app will use vcpkg. False otherwise.
    */

@@ -74,7 +74,7 @@ function createAppFolder(fullPath: string): boolean {
  */
 function initCommander(): Command {
   const command = new Command();
-  command.name('scapp').description('C++ scaffolding app').version('1.1.5');
+  command.name('scapp').description('C++ scaffolding app').version('1.2.0');
   command.option('--debug');
   command.parse();
   return command;
@@ -139,7 +139,8 @@ async function scapp() {
   SCAPP_CONFIG.folderName = await Ask.folderName(SCAPP_CONFIG.appName);
   SCAPP_CONFIG.srcFolder  = await Ask.sourceFolder();
   if (SCAPP_CONFIG.srcFolder) SCAPP_CONFIG.srcFolderName = await Ask.sourceFolderName(SCAPP_CONFIG.SRC_FOLDER);
-  SCAPP_CONFIG.addMain      = await Ask.addMain();
+  SCAPP_CONFIG.standard = await Ask.standard(SCAPP_CONFIG.STANDARDS);
+  SCAPP_CONFIG.addMain  = await Ask.addMain();
   if (SCAPP_CONFIG.addMain) SCAPP_CONFIG.mainFileName = await Ask.mainFileName(SCAPP_CONFIG.MAIN_FILE_NAME);
   SCAPP_CONFIG.git          = await Ask.git();
   SCAPP_CONFIG.cmake        = await Ask.cmake();
@@ -174,7 +175,7 @@ async function scapp() {
   // git
   if (SCAPP_CONFIG.git) {
     // git init command to jumpstart a git repo
-    initGit(SCAPP_CONFIG.fullPath);
+    if (!debugMode) initGit(SCAPP_CONFIG.fullPath);
   } else {
     // remove .gitignore if no git used
     removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.GITIGNORE_FILE));
