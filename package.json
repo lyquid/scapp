@@ -1,6 +1,6 @@
 {
   "name": "scapp",
-  "version": "1.0.0",
+  "version": "1.1.3",
   "description": "C++ scaffolding app",
   "main": "build/scapp.js",
   "types": "build/scapp.d.ts",
@@ -18,7 +18,6 @@
     "lintFix": "npx eslint --fix .",
     "test": "jest --config jestconfig.json",
     "prepare": "npm run build",
-    "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags"
@@ -33,6 +32,7 @@
   "keywords": [
     "cplusplus",
     "c++",
+    "cli",
     "cmake",
     "vcpkg",
     "scaffold",
@@ -44,7 +44,7 @@
   "bugs": {
     "url": "https://github.com/lyquid/scapp/issues"
   },
-  "homepage": "https://github.com/lyquid/scapp#readme",
+  "homepage": "https://lyquid.github.io/scapp/",
   "devDependencies": {
     "@types/inquirer": "^9.0.2",
     "@types/jest": "^29.1.0",
