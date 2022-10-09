@@ -209,4 +209,6 @@ async function scapp() {
   console.log(`App ${SCAPP_CONFIG.appName} successfully scaffolded!`);
 }
 
+export const removeFileForTesting = { removeFile };
+
 scapp();
