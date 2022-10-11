@@ -1,6 +1,6 @@
 {
   "name": "scapp",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "C++ scaffolding app",
   "main": "build/scapp.js",
   "types": "build/scapp.d.ts",
