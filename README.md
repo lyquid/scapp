@@ -8,7 +8,9 @@ Create a scaffold for your C++ app in seconds, supporting [Git](https://git-scm.
 
 ## How?
 
-Install the app like this: `npm i scapp -g`.
+Install the app like this: `npm install -g scapp`. This will install the app globally, so you can use it from any directory.
+
+Run the app by typing `scapp` on any command prompt.
 
 This is a CLI app that asks the user for information like app name, version, use editorconfig or not, etc. Then scaffolds a folder with all that input.
 
@@ -27,6 +29,6 @@ I usually code with [VSCode](https://code.visualstudio.com/) editor with a bunch
 - [x] Adds a pretty complete `.gitignore` generated from [here](https://www.toptal.com/developers/gitignore?templates=windows,macos,linux,node,c++,visualstudiocode,emacs,vim,visualstudio,cmake,vcpkg,intellij+all).
 - [x] `.editorconfig`.
 - [x] Various `CMakeLists.txt` already configured.
-- [x] A `vcpkg.json` also minimally configured.
+- [x] A `vcpkg.json` also configured.
 - [x] Which C++ standard to use (ie: C++20 (ISO/IEC 14882:2020)).
 - [ ] Compiler flags.

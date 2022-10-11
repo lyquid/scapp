@@ -19,6 +19,10 @@ export interface ScappConfig {
    */
   readonly CMAKELISTS_FILE: string,
   /**
+   * Description of the app.
+   */
+  description: string,
+  /**
    * Use editorconfig?
    */
   editorConfig: boolean,
@@ -81,7 +85,15 @@ export interface ScappConfig {
   /**
    * The name of the vcpkg.json file.
    */
-  VCPKG_JSON: string
+  VCPKG_JSON: string,
+  /**
+   * The version of the app.
+   */
+  version: string,
+  /**
+   * The default version for the app
+   */
+  readonly VERSION: string
 }
 
 export const SCAPP_CONFIG: ScappConfig = {
@@ -89,6 +101,7 @@ export const SCAPP_CONFIG: ScappConfig = {
   'appName':         '',
   'cmake':           true,
   'CMAKELISTS_FILE': 'CMakeLists.txt',
+  'description':     '',
   'editorConfig':    true,
   'EDITOR_CONFIG':   '.editorconfig',
   'folderName':      '',
@@ -104,5 +117,7 @@ export const SCAPP_CONFIG: ScappConfig = {
   'STANDARDS':       ['C++98', 'C++11', 'C++14', 'C++17', 'C++20'],
   'TEMPLATE_FOLDER': '../template',
   'vcpkg':           true,
-  'VCPKG_JSON':      'vcpkg.json'
+  'VCPKG_JSON':      'vcpkg.json',
+  'version':         '',
+  'VERSION':         '0.1.0'
 };

@@ -9,7 +9,8 @@ export default function vcpkg(SCAPP_CONFIG: ScappConfig) {
   const vcpkgJson = {
     '$schema': 'https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json',
     name: SCAPP_CONFIG.appName.toLowerCase().replaceAll('_', '-'),
-    // version: '',
+    version: SCAPP_CONFIG.version,
+    description: SCAPP_CONFIG.description
     // dependencies: ['', '']
   };
   try {

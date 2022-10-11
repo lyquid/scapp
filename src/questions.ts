@@ -86,6 +86,25 @@ export default class Ask {
   }
 
   /**
+   * Asks for a description for the app.
+   * @returns The user input for description.
+   */
+  static async description(): Promise<string> {
+    let description = '';
+    await inquirer.prompt([{
+      name:    'description',
+      message: 'A description for your app:',
+    }])
+    .then((answers) => {
+      description = answers.description as string;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+    return description;
+  }
+
+  /**
    * Asks if the new app should use editorconfig.
    * @returns True if the app will use editorconfig. False otherwise.
    */
@@ -286,6 +305,27 @@ export default class Ask {
       console.error(error);
     });
     return useVcpkg;
+  }
+
+  /**
+   * Asks for a version for the app.
+   * @param defaultVersion The default version number.
+   * @returns The version for the app.
+   */
+  static async version(defaultVersion: string): Promise<string> {
+    let version = '';
+    await inquirer.prompt([{
+      name:    'version',
+      message: 'App version:',
+      default: defaultVersion
+    }])
+    .then((answers) => {
+      version = answers.version as string;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+    return version;
   }
 
   /**
