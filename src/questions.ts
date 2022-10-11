@@ -73,7 +73,7 @@ export default class Ask {
     await inquirer.prompt([{
       type:    'confirm',
       name:    'cmake',
-      message: 'Use CMake?',
+      message: 'Use CMake:',
       default: true
     }])
     .then((answers) => {
@@ -113,7 +113,7 @@ export default class Ask {
     await inquirer.prompt([{
       type:    'confirm',
       name:    'editorConfig',
-      message: 'Use editorconfig?',
+      message: 'Use editorconfig:',
       default: true
     }])
     .then((answers) => {
@@ -133,7 +133,7 @@ export default class Ask {
     let folderName = '';
     await inquirer.prompt([{
       name: 'folderName',
-      message: 'Folder name for your C++ app: ',
+      message: 'Folder name for your C++ app:',
       default: appName,
       validate: (input: string) => {
         if (input !== '' && input !== null && this.#validFolderName(input)) {
@@ -160,7 +160,7 @@ export default class Ask {
     await inquirer.prompt([{
       type:    'confirm',
       name:    'git',
-      message: 'Use Git?',
+      message: 'Use Git:',
       default: true
     }])
     .then((answers) => {
@@ -208,7 +208,7 @@ export default class Ask {
     await inquirer.prompt([{
       type:    'confirm',
       name:    'srcFolder',
-      message: 'Create a source folder?',
+      message: 'Create a source folder:',
       default: true
     }])
     .then((answers) => {
@@ -295,7 +295,7 @@ export default class Ask {
     await inquirer.prompt([{
       type:    'confirm',
       name:    'vcpkg',
-      message: 'Use vcpkg?',
+      message: 'Use vcpkg:',
       default: true
     }])
     .then((answers) => {
