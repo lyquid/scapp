@@ -19,6 +19,10 @@ export interface ScappConfig {
    */
   readonly CMAKELISTS_FILE: string,
   /**
+   * Description of the app.
+   */
+  description: string,
+  /**
    * Use editorconfig?
    */
   editorConfig: boolean,
@@ -89,6 +93,7 @@ export const SCAPP_CONFIG: ScappConfig = {
   'appName':         '',
   'cmake':           true,
   'CMAKELISTS_FILE': 'CMakeLists.txt',
+  'description':     '',
   'editorConfig':    true,
   'EDITOR_CONFIG':   '.editorconfig',
   'folderName':      '',

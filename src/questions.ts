@@ -86,6 +86,25 @@ export default class Ask {
   }
 
   /**
+   * Asks for a description for the app.
+   * @returns The user input for description.
+   */
+  static async description(): Promise<string> {
+    let description = '';
+    await inquirer.prompt([{
+      name:    'description',
+      message: 'A description for your app:',
+    }])
+    .then((answers) => {
+      description = answers.description as string;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+    return description;
+  }
+
+  /**
    * Asks if the new app should use editorconfig.
    * @returns True if the app will use editorconfig. False otherwise.
    */

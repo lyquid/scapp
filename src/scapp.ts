@@ -74,7 +74,7 @@ function createAppFolder(fullPath: string): boolean {
  */
 function initCommander(): Command {
   const command = new Command();
-  command.name('scapp').description('C++ scaffolding app').version('1.2.1');
+  command.name('scapp').description('C++ scaffolding app').version('1.3.0');
   command.option('--debug');
   command.parse();
   return command;
@@ -135,12 +135,13 @@ function renameFolder(folder: string, newName: string) {
  * Driver code for the app.
  */
 async function scapp() {
-  SCAPP_CONFIG.appName    = await Ask.appName();
-  SCAPP_CONFIG.folderName = await Ask.folderName(SCAPP_CONFIG.appName);
-  SCAPP_CONFIG.srcFolder  = await Ask.sourceFolder();
+  SCAPP_CONFIG.appName      = await Ask.appName();
+  SCAPP_CONFIG.description  = await Ask.description();
+  SCAPP_CONFIG.folderName   = await Ask.folderName(SCAPP_CONFIG.appName);
+  SCAPP_CONFIG.srcFolder    = await Ask.sourceFolder();
   if (SCAPP_CONFIG.srcFolder) SCAPP_CONFIG.srcFolderName = await Ask.sourceFolderName(SCAPP_CONFIG.SRC_FOLDER);
-  SCAPP_CONFIG.standard = await Ask.standard(SCAPP_CONFIG.STANDARDS);
-  SCAPP_CONFIG.addMain  = await Ask.addMain();
+  SCAPP_CONFIG.standard     = await Ask.standard(SCAPP_CONFIG.STANDARDS);
+  SCAPP_CONFIG.addMain      = await Ask.addMain();
   if (SCAPP_CONFIG.addMain) SCAPP_CONFIG.mainFileName = await Ask.mainFileName(SCAPP_CONFIG.MAIN_FILE_NAME);
   SCAPP_CONFIG.git          = await Ask.git();
   SCAPP_CONFIG.cmake        = await Ask.cmake();
