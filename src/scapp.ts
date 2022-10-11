@@ -18,7 +18,7 @@ import Ask from './questions.js';
 import cmake from './cmake.js';
 import vcpkg from './vcpkg.js';
 
-const program = initCommander();
+const program = initCommander() as Command;
 const debugMode = program.opts().debug as boolean;
 
 /**
@@ -72,12 +72,19 @@ function createAppFolder(fullPath: string): boolean {
  * Initializes and configures Commander.
  * @returns A Command object ready to use.
  */
-function initCommander(): Command {
-  const command = new Command();
-  command.name('scapp').description('C++ scaffolding app').version('1.4.0');
-  command.option('--debug');
-  command.parse();
-  return command;
+function initCommander(): Command | undefined {
+  const packageJsonFolder = path.join(path.dirname(fileURLToPath(import.meta.url)), '../package.json');
+  try {
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonFolder).toString());
+    const command = new Command();
+    command.name(packageJson.name).description(packageJson.description).version(packageJson.version);
+    command.option('--debug');
+    command.parse();
+    return command;
+  } catch (err) {
+    console.error(err);
+  }
+  return undefined;
 }
 
 /**
