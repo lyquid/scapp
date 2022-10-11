@@ -308,6 +308,27 @@ export default class Ask {
   }
 
   /**
+   * Asks for a version for the app.
+   * @param defaultVersion The default version number.
+   * @returns The version for the app.
+   */
+  static async version(defaultVersion: string): Promise<string> {
+    let version = '';
+    await inquirer.prompt([{
+      name:    'version',
+      message: 'App version:',
+      default: defaultVersion
+    }])
+    .then((answers) => {
+      version = answers.version as string;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+    return version;
+  }
+
+  /**
    * Checks if a string is alphanumerical.
    * Inspired from [here](https://stackoverflow.com/questions/4434076/best-way-to-alphanumeric-check-in-javascript).
    * @param str The string to check.

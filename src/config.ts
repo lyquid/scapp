@@ -85,7 +85,15 @@ export interface ScappConfig {
   /**
    * The name of the vcpkg.json file.
    */
-  VCPKG_JSON: string
+  VCPKG_JSON: string,
+  /**
+   * The version of the app.
+   */
+  version: string,
+  /**
+   * The default version for the app
+   */
+  readonly VERSION: string
 }
 
 export const SCAPP_CONFIG: ScappConfig = {
@@ -109,5 +117,7 @@ export const SCAPP_CONFIG: ScappConfig = {
   'STANDARDS':       ['C++98', 'C++11', 'C++14', 'C++17', 'C++20'],
   'TEMPLATE_FOLDER': '../template',
   'vcpkg':           true,
-  'VCPKG_JSON':      'vcpkg.json'
+  'VCPKG_JSON':      'vcpkg.json',
+  'version':         '',
+  'VERSION':         '0.1.0'
 };

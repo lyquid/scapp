@@ -74,7 +74,7 @@ function createAppFolder(fullPath: string): boolean {
  */
 function initCommander(): Command {
   const command = new Command();
-  command.name('scapp').description('C++ scaffolding app').version('1.3.0');
+  command.name('scapp').description('C++ scaffolding app').version('1.4.0');
   command.option('--debug');
   command.parse();
   return command;
@@ -136,6 +136,7 @@ function renameFolder(folder: string, newName: string) {
  */
 async function scapp() {
   SCAPP_CONFIG.appName      = await Ask.appName();
+  SCAPP_CONFIG.version      = await Ask.version(SCAPP_CONFIG.VERSION);
   SCAPP_CONFIG.description  = await Ask.description();
   SCAPP_CONFIG.folderName   = await Ask.folderName(SCAPP_CONFIG.appName);
   SCAPP_CONFIG.srcFolder    = await Ask.sourceFolder();

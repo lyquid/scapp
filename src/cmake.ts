@@ -37,6 +37,8 @@ export default function cmake(SCAPP_CONFIG: ScappConfig) {
     }
     // replace the app name
     cmakeListsTxt = cmakeListsTxt.replaceAll('AWESOME_CPP_CMAKE_NAME', SCAPP_CONFIG.appName);
+    // replace the version
+    cmakeListsTxt = cmakeListsTxt.replace('VERSION 0', `VERSION ${SCAPP_CONFIG.version}`);
     // replace the description. Double quotes are intentional.
     cmakeListsTxt = cmakeListsTxt.replace('"AWESOME_CPP_CMAKE_DESCRIPTION"', JSON.stringify(SCAPP_CONFIG.description));
     // replace the C++ standard
