@@ -217,9 +217,7 @@ async function scapp() {
   }
 
   // vcpkg
-  if (SCAPP_CONFIG.vcpkg) {
-    vcpkg(SCAPP_CONFIG);
-  }
+  if (SCAPP_CONFIG.vcpkg) vcpkg(SCAPP_CONFIG);
 
   // source folder
   if (!SCAPP_CONFIG.srcFolder) {
