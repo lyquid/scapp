@@ -47,7 +47,7 @@ function copyTemplateFolder(templateFolderName: string, destination: string): bo
     console.log(err);
     return false;
   }
-  if (verboseMode) console.log(chalk.bold('Template folder copied successfully.'));
+  if (verboseMode) console.log('Template folder copied successfully.');
   return true;
 }
 
@@ -173,6 +173,8 @@ async function scapp() {
   SCAPP_CONFIG.vcpkg        = await Ask.vcpkg();
   SCAPP_CONFIG.editorConfig = await Ask.editorConfig();
 
+  console.log('\n');
+
   // try to create the folder app folder
   SCAPP_CONFIG.fullPath = path.join(process.cwd(), SCAPP_CONFIG.folderName);
   if (!createAppFolder(SCAPP_CONFIG.fullPath)) {
@@ -214,7 +216,7 @@ async function scapp() {
     // remove main CMakeLists.txt
     removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.CMAKELISTS_FILE));
     // remove source folder's CMakeLists.txt
-    if (SCAPP_CONFIG.srcFolder) removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.srcFolderName, SCAPP_CONFIG.CMAKELISTS_FILE));
+    if (SCAPP_CONFIG.srcFolder) removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.SRC_FOLDER, SCAPP_CONFIG.CMAKELISTS_FILE));
   }
 
   // vcpkg
@@ -229,7 +231,7 @@ async function scapp() {
     renameFolder(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.SRC_FOLDER), SCAPP_CONFIG.srcFolderName);
   }
 
-  console.log(chalk.green.bold(`\nC++ app ${SCAPP_CONFIG.appName} successfully scaffolded!`));
+  console.log(chalk.green.bold(`\nC++ app ${SCAPP_CONFIG.appName} successfully scaffolded!\n`));
 }
 
 export const removeFileForTesting = { removeFile };
