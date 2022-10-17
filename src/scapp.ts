@@ -20,6 +20,7 @@ import vcpkg from './vcpkg.js';
 
 const program = initCommander() as Command;
 const debugMode = program.opts().debug as boolean;
+const verboseMode = program.opts().verbose as boolean;
 
 /**
  * Copies the template folder to the user's desired directory.
@@ -32,11 +33,19 @@ function copyTemplateFolder(templateFolderName: string, destination: string): bo
   const templateFolder = path.join(path.dirname(fileURLToPath(import.meta.url)), templateFolderName);
   // copy it to the user's desired directory
   try {
+    if (verboseMode) {
+      // const files = fs.readdirSync(templateFolder);
+      // files.forEach(element => {
+      //   console.log(element);
+      // });
+      console.log(`Copying ${templateFolder} to ${destination}`);
+    }
     fs.cpSync(templateFolder, destination, { recursive: true });
   } catch (err) {
     console.log(err);
     return false;
   }
+  if (verboseMode) console.log('Template folder copied successfully.');
   return true;
 }
 
@@ -49,8 +58,7 @@ function createAppFolder(fullPath: string): boolean {
     if (!fs.existsSync(fullPath)) {
       // folder doesn't even exists, good!
       fs.mkdirSync(fullPath);
-      if (debugMode) console.debug(`Full path to app directory: ${fullPath}`);
-      return true;
+      if (verboseMode) console.log(`Creating folder ${fullPath}`);
     } else {
       // folder exists, check if it's empty
       if (fs.readdirSync(fullPath).length) {
@@ -60,12 +68,13 @@ function createAppFolder(fullPath: string): boolean {
       }
       // folder is emtpy
       console.warn('Folder already exists, but it seems to be empty. Proceeding...');
-      return true;
     }
   } catch (err) {
     console.error(err);
     return false;
   }
+  if (verboseMode) console.log(`Folder ${fullPath} created successfully.`);
+  return true;
 }
 
 /**
@@ -78,7 +87,8 @@ function initCommander(): Command | undefined {
     const packageJson = JSON.parse(fs.readFileSync(packageJsonFolder).toString());
     const command = new Command();
     command.name(packageJson.name).description(packageJson.description).version(packageJson.version);
-    command.option('--debug');
+    command.option('-d, --debug', 'Activates the debug mode. No git repo will be created', false);
+    command.option('-v, --verbose', 'Verbose mode', true);
     command.parse();
     return command;
   } catch (err) {
@@ -94,7 +104,7 @@ function initCommander(): Command | undefined {
 function initGit(where: string) {
   try {
     const output = execSync('git init', { cwd: where, encoding: 'utf-8' });
-    if (debugMode) console.debug(output);
+    if (verboseMode) console.debug(output);
   } catch (err) {
     console.error(err);
   }
@@ -109,7 +119,9 @@ function removeFile(file: string) {
     fs.rmSync(file);
   } catch (err) {
     console.error(err);
+    return;
   }
+  if (verboseMode) console.log(`File ${file} successfully removed.`);
 }
 
 /**
@@ -121,7 +133,9 @@ function removeFolder(path: string) {
     fs.rmSync(path, { recursive: true, force: true });
   } catch (err) {
     console.error(err);
+    return;
   }
+  if (verboseMode) console.log(`Folder ${path} successfully removed.`);
 }
 
 /**
@@ -135,7 +149,9 @@ function renameFolder(folder: string, newName: string) {
     fs.renameSync(folder, finalFolder);
   } catch (err) {
     console.error(err);
+    return;
   }
+  if (verboseMode) console.log(`Folder ${folder} renamed to ${finalFolder}`);
 }
 
 /**
@@ -170,7 +186,7 @@ async function scapp() {
   }
 
   // main file
-  if (SCAPP_CONFIG.addMain) {
+  if (SCAPP_CONFIG.addMain && SCAPP_CONFIG.mainFileName !== SCAPP_CONFIG.MAIN_FILE_NAME) {
     renameFolder(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.MAIN_FILE_NAME), SCAPP_CONFIG.mainFileName);
   } else {
     removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.MAIN_FILE_NAME));
@@ -203,8 +219,6 @@ async function scapp() {
   // vcpkg
   if (SCAPP_CONFIG.vcpkg) {
     vcpkg(SCAPP_CONFIG);
-  } else {
-    removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.VCPKG_JSON));
   }
 
   // source folder
@@ -216,7 +230,7 @@ async function scapp() {
     renameFolder(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.SRC_FOLDER), SCAPP_CONFIG.srcFolderName);
   }
 
-  console.log(`App ${SCAPP_CONFIG.appName} successfully scaffolded!`);
+  console.log(`C++ app ${SCAPP_CONFIG.appName} successfully scaffolded!`);
 }
 
 export const removeFileForTesting = { removeFile };
