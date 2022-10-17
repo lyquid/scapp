@@ -12,6 +12,8 @@ import process from 'process';
 import { execSync } from 'child_process';
 // arguments
 import { Command } from 'commander';
+// console colors
+import chalk from 'chalk';
 // own imports
 import { SCAPP_CONFIG } from './config.js';
 import Ask from './questions.js';
@@ -38,14 +40,14 @@ function copyTemplateFolder(templateFolderName: string, destination: string): bo
       // files.forEach(element => {
       //   console.log(element);
       // });
-      console.log(`Copying ${templateFolder} to ${destination}`);
+      console.log(`Copying ${chalk.bold(templateFolder)} to ${chalk.bold(destination)}`);
     }
     fs.cpSync(templateFolder, destination, { recursive: true });
   } catch (err) {
     console.log(err);
     return false;
   }
-  if (verboseMode) console.log('Template folder copied successfully.');
+  if (verboseMode) console.log(chalk.bold('Template folder copied successfully.'));
   return true;
 }
 
@@ -58,22 +60,21 @@ function createAppFolder(fullPath: string): boolean {
     if (!fs.existsSync(fullPath)) {
       // folder doesn't even exists, good!
       fs.mkdirSync(fullPath);
-      if (verboseMode) console.log(`Creating folder ${fullPath}`);
     } else {
       // folder exists, check if it's empty
       if (fs.readdirSync(fullPath).length) {
         // folder's not empty
-        console.error('Folder already exists and isn\'t emtpy! Aborting.');
+        console.error(chalk.red('Folder already exists and isn\'t emtpy! Aborting.'));
         return false;
       }
       // folder is emtpy
-      console.warn('Folder already exists, but it seems to be empty. Proceeding...');
+      console.warn(chalk.yellow('Folder already exists, but it seems to be empty. Proceeding...'));
     }
   } catch (err) {
     console.error(err);
     return false;
   }
-  if (verboseMode) console.log(`Folder ${fullPath} created successfully.`);
+  if (verboseMode) console.log(`Folder ${chalk.bold(fullPath)} created successfully.`);
   return true;
 }
 
@@ -104,7 +105,7 @@ function initCommander(): Command | undefined {
 function initGit(where: string) {
   try {
     const output = execSync('git init', { cwd: where, encoding: 'utf-8' });
-    if (verboseMode) console.debug(output);
+    if (verboseMode) console.debug(chalk.bold(output));
   } catch (err) {
     console.error(err);
   }
@@ -121,7 +122,7 @@ function removeFile(file: string) {
     console.error(err);
     return;
   }
-  if (verboseMode) console.log(`File ${file} successfully removed.`);
+  if (verboseMode) console.log(`File ${chalk.bold(file)} successfully removed.`);
 }
 
 /**
@@ -135,7 +136,7 @@ function removeFolder(path: string) {
     console.error(err);
     return;
   }
-  if (verboseMode) console.log(`Folder ${path} successfully removed.`);
+  if (verboseMode) console.log(`Folder ${chalk.bold(path)} successfully removed.`);
 }
 
 /**
@@ -151,7 +152,7 @@ function renameFolder(folder: string, newName: string) {
     console.error(err);
     return;
   }
-  if (verboseMode) console.log(`Folder ${folder} renamed to ${finalFolder}`);
+  if (verboseMode) console.log(`Folder ${chalk.bold(folder)} renamed to ${chalk.bold(finalFolder)}`);
 }
 
 /**
@@ -228,7 +229,7 @@ async function scapp() {
     renameFolder(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.SRC_FOLDER), SCAPP_CONFIG.srcFolderName);
   }
 
-  console.log(`C++ app ${SCAPP_CONFIG.appName} successfully scaffolded!`);
+  console.log(chalk.green.bold(`\nC++ app ${SCAPP_CONFIG.appName} successfully scaffolded!`));
 }
 
 export const removeFileForTesting = { removeFile };
