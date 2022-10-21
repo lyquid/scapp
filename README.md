@@ -16,7 +16,11 @@ This is a CLI app that asks the user for information like app name, version, use
 
 ## Why?
 
-If your are like me and enjoy starting new C++ projects to try new things, maybe you are tired of always setup the app before you can even code something.
+If your are like me and enjoy starting new C++ projects to try new things, maybe you are tired of manually configure the outrageous quantity of compiler and linker options just to use a simple library. And in Windows it gets worse, much worse. 
+
+I wish that someday, C++ coders will enjoy an ecosystem similar to Node.js for JavaScript.
+
+For now, use this if you please. It's mean to configure and scaffold a modern C++ app. You only need to add the dependencies on the `vcpkg.json` and in the corresponding `CMakeLists.txt` (more info inside those files, **read them!**).
 
 That's the reason why I've created this tool: *laziness*.
 
