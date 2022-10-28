@@ -1,3 +1,4 @@
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6638/badge)](https://bestpractices.coreinfrastructure.org/projects/6638)
 # scapp
 
 Scaffold a C++ App
