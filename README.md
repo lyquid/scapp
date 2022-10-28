@@ -5,7 +5,7 @@ Scaffold a C++ App
 
 ## What?
 
-Create a scaffold for your C++ app in seconds, supporting [Git](https://git-scm.com/), [CMake](https://cmake.org/), [editorconfig](https://editorconfig.org/) and [vcpkg](https://vcpkg.io/en/index.html) and also different C++ standards.
+Create a scaffold for your C++ app in seconds, supporting [Git](https://git-scm.com/), [CMake](https://cmake.org/), [editorconfig](https://editorconfig.org/), [vcpkg](https://vcpkg.io/en/index.html) and different C++ standards.
 
 ## How?
 
