@@ -78,7 +78,7 @@ function initCommander(): Command | undefined {
     const packageJson = JSON.parse(fs.readFileSync(packageJsonFolder).toString());
     const command = new Command();
     command.name(packageJson.name).description(packageJson.description).version(packageJson.version);
-    command.option('--debug');
+    command.option('-d, --debug', 'Activates the debug mode.', false);
     command.parse();
     return command;
   } catch (err) {
