@@ -1,7 +1,7 @@
 {
   "name": "scapp",
-  "version": "1.4.2",
-  "description": "C++ scaffolding app",
+  "version": "1.5.1",
+  "description": "C++ app scaffolding utility.",
   "main": "build/scapp.js",
   "types": "build/scapp.d.ts",
   "type": "module",
@@ -9,7 +9,7 @@
     "scapp": "./build/scapp.js"
   },
   "scripts": {
-    "build": "tsc -b -v",
+    "build": "tsc -b -v --force",
     "start": "node build/scapp.js",
     "debug": "node build/scapp.js --debug",
     "watch": "tsc -b -v -watch",
@@ -36,6 +36,7 @@
     "c++",
     "cli",
     "cmake",
+    "editorconfig",
     "vcpkg",
     "scaffold",
     "generator",
@@ -62,6 +63,7 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
+    "chalk": "^5.1.2",
     "commander": "^9.4.0",
     "inquirer": "^9.1.2"
   }

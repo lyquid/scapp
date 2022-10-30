@@ -12,6 +12,8 @@ import process from 'process';
 import { execSync } from 'child_process';
 // arguments
 import { Command } from 'commander';
+// console colors
+import chalk from 'chalk';
 // own imports
 import { SCAPP_CONFIG } from './config.js';
 import Ask from './questions.js';
@@ -20,6 +22,7 @@ import vcpkg from './vcpkg.js';
 
 const program = initCommander() as Command;
 const debugMode = program.opts().debug as boolean;
+const verboseMode = program.opts().verbose as boolean;
 
 /**
  * Copies the template folder to the user's desired directory.
@@ -32,11 +35,19 @@ function copyTemplateFolder(templateFolderName: string, destination: string): bo
   const templateFolder = path.join(path.dirname(fileURLToPath(import.meta.url)), templateFolderName);
   // copy it to the user's desired directory
   try {
+    if (verboseMode) {
+      // const files = fs.readdirSync(templateFolder);
+      // files.forEach(element => {
+      //   console.log(element);
+      // });
+      console.log(`Copying ${chalk.bold(templateFolder)} to ${chalk.bold(destination)}`);
+    }
     fs.cpSync(templateFolder, destination, { recursive: true });
   } catch (err) {
     console.log(err);
     return false;
   }
+  if (verboseMode) console.log('Template folder copied successfully.');
   return true;
 }
 
@@ -49,23 +60,22 @@ function createAppFolder(fullPath: string): boolean {
     if (!fs.existsSync(fullPath)) {
       // folder doesn't even exists, good!
       fs.mkdirSync(fullPath);
-      if (debugMode) console.debug(`Full path to app directory: ${fullPath}`);
-      return true;
     } else {
       // folder exists, check if it's empty
       if (fs.readdirSync(fullPath).length) {
         // folder's not empty
-        console.error('Folder already exists and isn\'t emtpy! Aborting.');
+        console.error(chalk.red('Folder already exists and isn\'t emtpy! Aborting.'));
         return false;
       }
       // folder is emtpy
-      console.warn('Folder already exists, but it seems to be empty. Proceeding...');
-      return true;
+      console.warn(chalk.yellow('Folder already exists, but it seems to be empty. Proceeding...'));
     }
   } catch (err) {
     console.error(err);
     return false;
   }
+  if (verboseMode) console.log(`Folder ${chalk.bold(fullPath)} created successfully.`);
+  return true;
 }
 
 /**
@@ -78,7 +88,8 @@ function initCommander(): Command | undefined {
     const packageJson = JSON.parse(fs.readFileSync(packageJsonFolder).toString());
     const command = new Command();
     command.name(packageJson.name).description(packageJson.description).version(packageJson.version);
-    command.option('-d, --debug', 'Activates the debug mode.', false);
+    command.option('-d, --debug', 'Activates the debug mode. No git repo will be created', false);
+    command.option('-v, --verbose', 'Verbose mode', true);
     command.parse();
     return command;
   } catch (err) {
@@ -94,7 +105,7 @@ function initCommander(): Command | undefined {
 function initGit(where: string) {
   try {
     const output = execSync('git init', { cwd: where, encoding: 'utf-8' });
-    if (debugMode) console.debug(output);
+    if (verboseMode) console.debug(chalk.bold(output));
   } catch (err) {
     console.error(err);
   }
@@ -109,7 +120,9 @@ function removeFile(file: string) {
     fs.rmSync(file);
   } catch (err) {
     console.error(err);
+    return;
   }
+  if (verboseMode) console.log(`File ${chalk.bold(file)} successfully removed.`);
 }
 
 /**
@@ -121,7 +134,9 @@ function removeFolder(path: string) {
     fs.rmSync(path, { recursive: true, force: true });
   } catch (err) {
     console.error(err);
+    return;
   }
+  if (verboseMode) console.log(`Folder ${chalk.bold(path)} successfully removed.`);
 }
 
 /**
@@ -135,7 +150,9 @@ function renameFolder(folder: string, newName: string) {
     fs.renameSync(folder, finalFolder);
   } catch (err) {
     console.error(err);
+    return;
   }
+  if (verboseMode) console.log(`Folder ${chalk.bold(folder)} renamed to ${chalk.bold(finalFolder)}`);
 }
 
 /**
@@ -156,6 +173,8 @@ async function scapp() {
   SCAPP_CONFIG.vcpkg        = await Ask.vcpkg();
   SCAPP_CONFIG.editorConfig = await Ask.editorConfig();
 
+  console.log('\n');
+
   // try to create the folder app folder
   SCAPP_CONFIG.fullPath = path.join(process.cwd(), SCAPP_CONFIG.folderName);
   if (!createAppFolder(SCAPP_CONFIG.fullPath)) {
@@ -170,10 +189,10 @@ async function scapp() {
   }
 
   // main file
-  if (SCAPP_CONFIG.addMain) {
-    renameFolder(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.MAIN_FILE_NAME), SCAPP_CONFIG.mainFileName);
-  } else {
+  if (!SCAPP_CONFIG.addMain) {
     removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.MAIN_FILE_NAME));
+  } else if(SCAPP_CONFIG.mainFileName !== SCAPP_CONFIG.MAIN_FILE_NAME) {
+    renameFolder(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.MAIN_FILE_NAME), SCAPP_CONFIG.mainFileName);
   }
 
   // editorconfig
@@ -197,15 +216,11 @@ async function scapp() {
     // remove main CMakeLists.txt
     removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.CMAKELISTS_FILE));
     // remove source folder's CMakeLists.txt
-    if (SCAPP_CONFIG.srcFolder) removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.srcFolderName, SCAPP_CONFIG.CMAKELISTS_FILE));
+    if (SCAPP_CONFIG.srcFolder) removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.SRC_FOLDER, SCAPP_CONFIG.CMAKELISTS_FILE));
   }
 
   // vcpkg
-  if (SCAPP_CONFIG.vcpkg) {
-    vcpkg(SCAPP_CONFIG);
-  } else {
-    removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.VCPKG_JSON));
-  }
+  if (SCAPP_CONFIG.vcpkg) vcpkg(SCAPP_CONFIG);
 
   // source folder
   if (!SCAPP_CONFIG.srcFolder) {
@@ -216,7 +231,7 @@ async function scapp() {
     renameFolder(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.SRC_FOLDER), SCAPP_CONFIG.srcFolderName);
   }
 
-  console.log(`App ${SCAPP_CONFIG.appName} successfully scaffolded!`);
+  console.log(chalk.green.bold(`\nC++ app ${SCAPP_CONFIG.appName} successfully scaffolded!\n`));
 }
 
 export const removeFileForTesting = { removeFile };
