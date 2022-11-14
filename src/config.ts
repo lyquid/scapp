@@ -107,7 +107,7 @@ export const SCAPP_CONFIG: ScappConfig = {
   'folderName':      '',
   'fullPath':        '',
   'git':             true,
-  'GITIGNORE_FILE':  '.gitignore',
+  'GITIGNORE_FILE':  'not_a_gitignore_=)',
   'mainFileName':    '',
   'MAIN_FILE_NAME':  'main.cpp',
   'srcFolder':       true,

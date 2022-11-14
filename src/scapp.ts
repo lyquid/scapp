@@ -19,6 +19,7 @@ import { SCAPP_CONFIG } from './config.js';
 import Ask from './questions.js';
 import cmake from './cmake.js';
 import vcpkg from './vcpkg.js';
+import { rename } from 'fs/promises';
 
 const program = initCommander() as Command;
 const debugMode = program.opts().debug as boolean;
@@ -204,6 +205,10 @@ async function scapp() {
   if (SCAPP_CONFIG.git) {
     // git init command to jumpstart a git repo
     if (!debugMode) initGit(SCAPP_CONFIG.fullPath);
+    rename(
+      path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.GITIGNORE_FILE),
+      path.join(SCAPP_CONFIG.fullPath, '.gitignore')
+    );
   } else {
     // remove .gitignore if no git used
     removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.GITIGNORE_FILE));
