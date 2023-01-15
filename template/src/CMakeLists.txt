@@ -1,5 +1,5 @@
 add_executable(AWESOME_CPP_CMAKE_NAME
-  ../main.cpp
+  main.cpp
   # add more cpp files to compile!
   # ej. game.cpp
 )

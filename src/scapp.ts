@@ -191,9 +191,9 @@ async function scapp() {
 
   // main file
   if (!SCAPP_CONFIG.addMain) {
-    removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.MAIN_FILE_NAME));
+    removeFile(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.SRC_FOLDER, SCAPP_CONFIG.MAIN_FILE_NAME));
   } else if(SCAPP_CONFIG.mainFileName !== SCAPP_CONFIG.MAIN_FILE_NAME) {
-    renameFolder(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.MAIN_FILE_NAME), SCAPP_CONFIG.mainFileName);
+    renameFolder(path.join(SCAPP_CONFIG.fullPath, SCAPP_CONFIG.SRC_FOLDER, SCAPP_CONFIG.MAIN_FILE_NAME), SCAPP_CONFIG.mainFileName);
   }
 
   // editorconfig
