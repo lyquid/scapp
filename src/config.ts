@@ -119,5 +119,5 @@ export const SCAPP_CONFIG: ScappConfig = {
   'vcpkg':           true,
   'VCPKG_JSON':      'vcpkg.json',
   'version':         '',
-  'VERSION':         '0.1.0'
+  'VERSION':         '1.6.1'
 };
