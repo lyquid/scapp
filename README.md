@@ -1,8 +1,8 @@
-[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6638/badge)](https://bestpractices.coreinfrastructure.org/projects/6638)
+[![CodeQL](https://github.com/lyquid/scapp/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/lyquid/scapp/actions/workflows/codeql-analysis.yml) [![Dependency Review](https://github.com/lyquid/scapp/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/lyquid/scapp/actions/workflows/dependency-review.yml) [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6638/badge)](https://bestpractices.coreinfrastructure.org/projects/6638)
 # scapp
 
 Scaffold a C++ App
-
+ 
 ## What?
 
 Create a scaffold for your C++ app in seconds, supporting [Git](https://git-scm.com/), [CMake](https://cmake.org/), [editorconfig](https://editorconfig.org/), [vcpkg](https://vcpkg.io/en/index.html) and different C++ standards.
