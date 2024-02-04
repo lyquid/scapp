@@ -114,7 +114,7 @@ export const SCAPP_CONFIG: ScappConfig = {
   'srcFolderName':   '',
   'SRC_FOLDER':      'src',
   'standard':        '',
-  'STANDARDS':       ['C++98', 'C++11', 'C++14', 'C++17', 'C++20'],
+  'STANDARDS':       ['C++98', 'C++11', 'C++14', 'C++17', 'C++20', 'C++23'],
   'TEMPLATE_FOLDER': '../template',
   'vcpkg':           true,
   'VCPKG_JSON':      'vcpkg.json',
