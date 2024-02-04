@@ -1,8 +1,9 @@
 [![CodeQL](https://github.com/lyquid/scapp/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/lyquid/scapp/actions/workflows/codeql-analysis.yml) [![Dependency Review](https://github.com/lyquid/scapp/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/lyquid/scapp/actions/workflows/dependency-review.yml) [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6638/badge)](https://bestpractices.coreinfrastructure.org/projects/6638)
+
 # scapp
 
 Scaffold a C++ App
- 
+
 ## What?
 
 Create a scaffold for your C++ app in seconds, supporting [Git](https://git-scm.com/), [CMake](https://cmake.org/), [editorconfig](https://editorconfig.org/), [vcpkg](https://vcpkg.io/en/index.html) and different C++ standards.
@@ -17,7 +18,7 @@ This is a CLI app that asks the user for information like app name, version, use
 
 ## Why?
 
-If your are like me and enjoy starting new C++ projects to try new things, maybe you are tired of manually configure the outrageous quantity of compiler and linker options just to use a simple library. And in Windows it gets worse, much worse. 
+If your are like me and enjoy starting new C++ projects to try new things, maybe you are tired of manually configure the outrageous quantity of compiler and linker options just to use a simple library. And in Windows it gets worse, much worse.
 
 I wish that someday, C++ coders will enjoy an ecosystem similar to Node.js for JavaScript.
 
