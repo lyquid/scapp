@@ -278,6 +278,9 @@ export default class Ask {
         case 'C++20':
           standard = '20';
           break;
+        case 'C++23':
+          standard = '23';
+          break;
       }
     })
     .catch((error) => {
